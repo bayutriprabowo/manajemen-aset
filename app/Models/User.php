@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -53,13 +54,13 @@ class User extends Authenticatable
         ];
     }
 
-    public function masterRole(): HasOne
+    public function masterRole(): BelongsTo
     {
-        return $this->hasOne(MasterRole::class);
+        return $this->belongsTo(MasterRole::class, 'role_id');
     }
 
-    public function masterCompany(): HasOne
+    public function masterCompany(): BelongsTo
     {
-        return $this->hasOne(MasterCompany::class);
+        return $this->belongsTo(MasterCompany::class, 'company_id');
     }
 }

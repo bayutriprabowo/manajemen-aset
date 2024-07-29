@@ -34,7 +34,8 @@ class AuthenticatedSessionController extends Controller
             'password' => ['required'],
         ]);
 
-        $user = User::where('email', $request->input('email'))->first();
+        $user = User::with('masterRole', 'masterCompany')
+            ->where('email', $request->input('email'))->first();
 
         if ($user && Hash::check($request->input('password'), $user->password)) {
             Auth::login($user);
