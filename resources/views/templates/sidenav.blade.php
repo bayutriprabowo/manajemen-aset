@@ -8,7 +8,9 @@
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                 </a>
+
                 <div class="sb-sidenav-menu-heading">Menu</div>
+
                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
                     aria-expanded="false" aria-controls="collapseLayouts">
                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
@@ -18,6 +20,9 @@
                 <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
                     data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
+                        @if (auth()->user()->masterRole->name == 'superuser')
+                            <a class="nav-link" href="/users">Master User</a>
+                        @endif
                         <a class="nav-link" href="master1.html">Master 1</a>
                         <a class="nav-link" href="layout-sidenav-light.html">Master 2</a>
                     </nav>
@@ -95,7 +100,7 @@
         </div>
         <div class="sb-sidenav-footer">
             <div class="small">Logged in as:</div>
-            Admin/User
+            {{ auth()->user()->name }} / {{ auth()->user()->masterRole->name }}
         </div>
     </nav>
 </div>

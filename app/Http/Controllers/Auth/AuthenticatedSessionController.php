@@ -37,6 +37,8 @@ class AuthenticatedSessionController extends Controller
         $user = User::with('masterRole', 'masterCompany')
             ->where('email', $request->input('email'))->first();
 
+        //dd($user);
+
         if ($user && Hash::check($request->input('password'), $user->password)) {
             Auth::login($user);
             $request->session()->regenerate();
