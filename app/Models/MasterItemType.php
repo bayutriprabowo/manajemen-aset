@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MasterItemType extends Model
 {
     use HasFactory;
+
+    protected $table = 'master_item_types';
 }
