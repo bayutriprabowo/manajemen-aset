@@ -17,4 +17,14 @@ class MasterCompany extends Model
     {
         return $this->hasMany(User::class, 'company_id');
     }
+
+    public function masterDepartment(): HasMany
+    {
+        return $this->hasMany(MasterDepartment::class, 'company_id');
+    }
+
+    public function masterSection(): HasMany
+    {
+        return $this->hasMany(MasterSection::class, 'company_id');
+    }
 }
