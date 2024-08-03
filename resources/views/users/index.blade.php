@@ -17,7 +17,7 @@
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">User Tables</li>
                     </ol>
-                    <a class="btn btn-success" href="users.create">Tambah User</a>
+                    <a class="btn btn-success" href="{{ route('users.create') }}">Tambah User</a>
                     <div class="card mb-4">
                         <div class="card-body">
                             Data ini merupakan data dari user, mohon jangan diapa-apakan apabila tidak ada kepentigan

@@ -32,7 +32,12 @@ Route::middleware('auth')->group(function () {
 
 // master tipe item
 Route::middleware('auth')->group(function () {
-    Route::get('/types', [MasterItemTypeController::class, 'index'])->name('types.index');
+    Route::get('/item_types', [MasterItemTypeController::class, 'index'])->name('item_types.index');
+    Route::get('/item_types.create', [MasterItemTypeController::class, 'create'])->name('item_types.create');
+    Route::post('/item_types.store', [MasterItemTypeController::class, 'store'])->name('item_types.store');
+    Route::get('/item_types.edit/{id}', [MasterItemTypeController::class, 'edit'])->name('item_types.edit');
+    Route::put('item_types.update/{id}', [MasterItemTypeController::class, 'update'])->name('item_types.update');
+    Route::delete('item_types/{id}', [MasterItemTypeController::class, 'destroy'])->name('item_types.destroy');
 });
 
 require __DIR__ . '/auth.php';

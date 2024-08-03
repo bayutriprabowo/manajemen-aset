@@ -10,4 +10,8 @@ class MasterItemType extends Model
     use HasFactory;
 
     protected $table = 'master_item_types';
+
+    protected $fillable = [
+        'name'
+    ];
 }
