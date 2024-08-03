@@ -40,6 +40,7 @@
                                         <th>Posisi/Jabatan</th>
                                         <th>Perusahaan</th>
                                         <th>Peran</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -51,6 +52,7 @@
                                         <th>Posisi/Jabatan</th>
                                         <th>Perusahaan</th>
                                         <th>Peran</th>
+                                        <th>Action</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -64,6 +66,8 @@
                                             <td>{{ $user->position }}</td>
                                             <td>{{ $user->masterCompany->name }}</td>
                                             <td>{{ $user->masterRole->name }}</td>
+                                            <td><a class="btn btn-warning"
+                                                    href="{{ route('users.edit', $user->id) }}">edit</a></td>
                                         </tr>
                                     @endforeach
 

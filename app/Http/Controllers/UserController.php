@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    // create
     public function index()
     {
         $users = User::with(['masterRole', 'masterCompany'])->get();
@@ -46,6 +47,38 @@ class UserController extends Controller
 
         User::insert($data);
 
-        return redirect()->back()->with('success', 'Records inserted successfully!');
+        // return redirect()->back()->with('success', 'Records inserted successfully!');
+        return redirect()->route('users.index')->with('succcess', 'Penambahan berhasil');
     }
+    // end create
+
+
+    // edit
+    public function edit($id)
+    {
+        $masterCompany = MasterCompany::all();
+        $masterRole = MasterRole::all();
+        $user = User::findOrFail($id);
+        return view('users.edit', compact(['user', 'masterCompany', 'masterRole']));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $user->nip = $request->input('nip');
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        if ($request->input('password')) {
+            $user->password = $request->input('password');
+        }
+        $user->address = $request->input('address');
+        $user->position = $request->input('position');
+        $user->company_id = $request->input('company_id');
+        $user->role_id = $request->input('role_id');
+
+        $user->save();
+
+        return redirect()->route('users.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda
+    }
+    // end edit
 }
