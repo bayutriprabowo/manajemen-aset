@@ -67,7 +67,17 @@
                                             <td>{{ $user->masterCompany->name }}</td>
                                             <td>{{ $user->masterRole->name }}</td>
                                             <td><a class="btn btn-warning"
-                                                    href="{{ route('users.edit', $user->id) }}">edit</a></td>
+                                                    href="{{ route('users.edit', $user->id) }}">edit</a>
+                                                <a href="#" class="btn btn-danger"
+                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this user?')) { document.getElementById('delete-user-{{ $user->id }}').submit(); }">Delete</a>
+
+                                                <form id="delete-user-{{ $user->id }}"
+                                                    action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                                    style="display: none;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
 

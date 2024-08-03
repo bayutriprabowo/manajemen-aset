@@ -81,4 +81,14 @@ class UserController extends Controller
         return redirect()->route('users.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda
     }
     // end edit
+
+    // delete
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+    }
+    // end delete
 }
