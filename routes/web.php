@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MasterItemTypeController;
+use App\Http\Controllers\MasterCompanyController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -38,6 +39,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/item_types.edit/{id}', [MasterItemTypeController::class, 'edit'])->name('item_types.edit');
     Route::put('item_types.update/{id}', [MasterItemTypeController::class, 'update'])->name('item_types.update');
     Route::delete('item_types/{id}', [MasterItemTypeController::class, 'destroy'])->name('item_types.destroy');
+});
+
+// company
+Route::middleware('auth')->group(function () {
+    Route::get('/companies', [MasterCompanyController::class, 'index'])->name('companies.index');
+    Route::get('/companies.create', [MasterCompanyController::class, 'create'])->name('companies.create');
+    Route::post('/companies.store', [MasterCompanyController::class, 'store'])->name('companies.store');
+    Route::get('/companies.edit/{id}', [MasterCompanyController::class, 'edit'])->name('companies.edit');
+    Route::put('companies.update/{id}', [MasterCompanyController::class, 'update'])->name('companies.update');
+    Route::delete('companies/{id}', [MasterCompanyController::class, 'destroy'])->name('companies.destroy');
 });
 
 require __DIR__ . '/auth.php';

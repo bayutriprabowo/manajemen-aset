@@ -63,6 +63,6 @@ class MasterItemTypeController extends Controller
         $itemType = MasterItemType::findOrFail($id);
         $itemType->delete();
 
-        return redirect()->route('item_types.index')->with('success', 'User deleted successfully');
+        return redirect()->route('item_types.index')->with('success', 'tipe item deleted successfully');
     }
 }

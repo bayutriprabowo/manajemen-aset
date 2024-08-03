@@ -13,6 +13,14 @@ class MasterCompany extends Model
 
     protected $table = 'master_companies';
 
+    protected $fillable = [
+        'name',
+        'address',
+        'company_number',
+        'contact_person',
+        'contact_person_number'
+    ];
+
     public function user(): HasMany
     {
         return $this->hasMany(User::class, 'company_id');
