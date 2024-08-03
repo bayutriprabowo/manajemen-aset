@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// users
 Route::middleware('auth')->group(function () {
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users.create', [UserController::class, 'create'])->name('users.create');
@@ -29,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 });
 
+// master tipe item
 Route::middleware('auth')->group(function () {
     Route::get('/types', [MasterItemTypeController::class, 'index'])->name('types.index');
 });

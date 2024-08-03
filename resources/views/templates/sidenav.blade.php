@@ -4,7 +4,7 @@
         <div class="sb-sidenav-menu">
             <div class="nav">
                 <div class="sb-sidenav-menu-heading">Core</div>
-                <a class="nav-link" href="/dashboard">
+                <a class="nav-link" href="{{ route('dashboard') }}">
                     <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                     Dashboard
                 </a>
@@ -21,7 +21,10 @@
                     data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
                         @if (auth()->user()->masterRole->name == 'superuser')
-                            <a class="nav-link" href="/users">Master User</a>
+                            <a class="nav-link" href="{{ route('users.index') }}">Master User</a>
+                        @endif
+                        @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                            <a class="nav-link" href="{{ route('types.index') }}">Master Tipe Item</a>
                         @endif
                         <a class="nav-link" href="master1.html">Master 1</a>
                         <a class="nav-link" href="layout-sidenav-light.html">Master 2</a>

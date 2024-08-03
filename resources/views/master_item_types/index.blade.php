@@ -15,7 +15,7 @@
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Master Item Types Tables</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Master Item Types</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Master Item Types Tables</li>
                     </ol>
                     <div class="card mb-4">

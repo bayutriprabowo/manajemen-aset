@@ -14,7 +14,7 @@
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">User Tables</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">User Tables</li>
                     </ol>
                     <a class="btn btn-success" href="users.create">Tambah User</a>
