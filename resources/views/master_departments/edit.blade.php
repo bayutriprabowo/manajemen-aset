@@ -13,7 +13,7 @@
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Edit Departemen</h1>
-                    <form action="{{ route('departments.update', $deparment->id) }}" method="POST">
+                    <form action="{{ route('departments.update', $department->id) }}" method="POST">
                         @csrf
                         @method('PUT')
 
@@ -26,7 +26,7 @@
                             <input type="text" class="form-control" id="address" name="address"
                                 value="{{ $department->address }}">
                             <label for="department_number">Nomor Perusahaan:</label>
-                            <input type="text" class="form-control" id="department_number" name="company_number"
+                            <input type="text" class="form-control" id="department_number" name="department_number"
                                 value="{{ $department->company_number }}">
                             <label for="contact_person">Contact Person:</label>
                             <input type="text" class="form-control" id="contact_person" name="contact_person"
@@ -38,7 +38,8 @@
                             <select class="form-control" id="company_id" name="company_id">
                                 @foreach ($masterCompany as $company)
                                     <option value="{{ $company->id }}"
-                                        {{ $user->company_id == $company->id ? 'selected' : '' }}>{{ $company->name }}
+                                        {{ $department->company_id == $company->id ? 'selected' : '' }}>
+                                        {{ $company->name }}
                                     </option>
                                 @endforeach
                             </select>

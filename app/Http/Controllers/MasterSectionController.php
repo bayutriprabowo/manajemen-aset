@@ -20,8 +20,8 @@ class MasterSectionController extends Controller
 
     public function create()
     {
-        $masterCompany = MasterCompany::all();
         $masterDepartment = MasterDepartment::all();
+        $masterCompany = MasterCompany::all();
         return view('master_sections.create', compact(['masterCompany', 'masterDepartment']));
     }
 

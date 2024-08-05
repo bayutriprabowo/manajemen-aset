@@ -24,6 +24,9 @@
                             <a class="nav-link" href="{{ route('users.index') }}">Master User</a>
                         @endif
                         @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                            <a class="nav-link" href="{{ route('items.index') }}">Master Item</a>
+                        @endif
+                        @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
                             <a class="nav-link" href="{{ route('item_types.index') }}">Master Tipe Item</a>
                         @endif
                         @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')

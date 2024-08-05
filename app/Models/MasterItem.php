@@ -12,18 +12,29 @@ class MasterItem extends Model
 
     protected $table = 'master_items';
 
-    public function masterCompany(): BelongsTo
+    protected $fillable = [
+        'name',
+        'price',
+        'type_id',
+    ];
+
+    public function masterItemType(): BelongsTo
     {
-        return $this->belongsTo(MasterCompany::class, 'company_id');
+        return $this->belongsTo(MasterItemType::class, 'type_id');
     }
 
-    public function masterDepartment(): BelongsTo
-    {
-        return $this->belongsTo(MasterDepartment::class, 'department_id');
-    }
+    // public function masterCompany(): BelongsTo
+    // {
+    //     return $this->belongsTo(MasterCompany::class, 'company_id');
+    // }
 
-    public function masterSection(): BelongsTo
-    {
-        return $this->belongsTo(MasterSection::class, 'section_id');
-    }
+    // public function masterDepartment(): BelongsTo
+    // {
+    //     return $this->belongsTo(MasterDepartment::class, 'department_id');
+    // }
+
+    // public function masterSection(): BelongsTo
+    // {
+    //     return $this->belongsTo(MasterSection::class, 'section_id');
+    // }
 }

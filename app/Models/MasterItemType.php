@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class MasterItemType extends Model
 {
@@ -14,4 +15,9 @@ class MasterItemType extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function masterItem(): HasMany
+    {
+        return $this->hasMany(MasterItem::class, 'type_id');
+    }
 }

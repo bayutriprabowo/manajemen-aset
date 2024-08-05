@@ -14,19 +14,16 @@
                 <div class="container-fluid px-4">
 
                     <!-- isi table -->
-                    <h1>Form Input Departemen</h1>
+                    <h1>Form Input Item</h1>
                     <button id="addRow" class="btn btn-success">Add Row</button>
-                    <form id="dataForm" action="{{ route('departments.store') }}" method="POST">
+                    <form id="dataForm" action="{{ route('items.store') }}" method="POST">
                         @csrf
                         <table id="datatable" class="display">
                             <thead>
                                 <tr>
                                     <th>Name</th>
-                                    <th>Alamat</th>
-                                    <th>No Telpon</th>
-                                    <th>Contact Person</th>
-                                    <th>No Contact Person</th>
-                                    <th>Perusahaan</th>
+                                    <th>Harga</th>
+                                    <th>Tipe Item/Barang</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,30 +61,6 @@
                 console.error('Error initializing DataTable:', error);
             }
 
-            // Data from Blade template
-            var masterCompanies = @json($masterCompany);
-            var masterDepartments = @json($masterDepartment);
-
-
-            function getCompanyOptions() {
-                var options = '<option value="">Pilih Perusahaan</option>';
-                masterCompanies.forEach(function(company) {
-                    options += `<option value="${company.id}">${company.name}</option>`;
-                });
-                return options;
-            }
-
-            function getDepartmentOptions(companyId) {
-                var options = '<option value="">Pilih Departemen</option>';
-                var selectedCompany = masterCompanies.find(company => company.id == companyId);
-                if (selectedCompany.id == masterDepartments.company_id) {
-                    masterDepartments.forEach(function(department) {
-                        options += `<option value="${department.id}">${department.name}</option>`;
-                    });
-                }
-                return options;
-            }
-
             // Add row functionality
             document.getElementById('addRow').addEventListener('click', function() {
                 var tbody = document.querySelector('#datatable tbody');
@@ -96,21 +69,19 @@
                     return;
                 }
 
+                var optionsItemType = `<option value="">Pilih Tipe/Jenis</option>
+                @foreach ($masterItemTypes as $type)
+                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                @endforeach`;
+
                 var newRow = document.createElement('tr');
                 newRow.innerHTML = `
                     <td><input type="text" name="name[]" class="form-control" required></td>
-                    <td><input type="text" name="address[]" class="form-control" required></td>
-                    <td><input type="text" name="department_number[]" class="form-control" required></td>
-                    <td><input type="text" name="contact_person[]" class="form-control" required></td>
-                    <td><input type="text" name="contact_person_number[]" class="form-control" required></td>
+                    <td><input type="text" name="price[]" class="form-control" required></td>
+                    
                     <td>
-                        <select name="company_id[]" class="form-control company-select" required>
-                            ${getCompanyOptions()}
-                        </select>
-                    </td>
-                    <td>
-                        <select name="department_id[]" class="form-control department-select" required>
-                            <option value="">Pilih Departemen</option>
+                        <select name="type_id[]" class="form-control" required>
+                            ${optionsItemType}
                         </select>
                     </td>
                     <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
@@ -118,19 +89,6 @@
 
                 tbody.appendChild(newRow);
                 console.log('New row added');
-
-                // Add event listener for the newly created company select
-                newRow.querySelector('.company-select').addEventListener('change', function() {
-                    var companyId = this.value;
-                    var departmentSelect = this.closest('tr').querySelector('.department-select');
-                    departmentSelect.innerHTML = getDepartmentOptions(companyId);
-                });
-
-                // Add event listener for the remove button
-                newRow.querySelector('.removeRow').addEventListener('click', function() {
-                    newRow.remove();
-                    console.log('Row removed');
-                });
             });
 
             // Remove row functionality
@@ -147,7 +105,6 @@
             });
         });
     </script>
-</body>
 </body>
 
 </html>

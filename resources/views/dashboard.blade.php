@@ -39,6 +39,21 @@
                         @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
+                                    <div class="card-body">Item/Barang</div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small text-white stretched-link"
+                                            href="{{ route('items.index') }}">View
+                                            Details</a>
+                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+
+                        @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card bg-warning text-white mb-4">
                                     <div class="card-body">Tipe Item / Tipe Barang</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
                                         <a class="small text-white stretched-link"
@@ -78,7 +93,7 @@
                             </div>
                         @endif
 
-                        @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                        {{-- @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
                                     <div class="card-body">Seksi/Ruangan</div>
@@ -90,7 +105,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
 
                         <div class="col-xl-3 col-md-6">
                             <div class="card bg-warning text-white mb-4">

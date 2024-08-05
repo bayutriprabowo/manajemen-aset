@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MasterItemTypeController;
 use App\Http\Controllers\MasterCompanyController;
 use App\Http\Controllers\MasterDepartmentController;
+use App\Http\Controllers\MasterItemController;
 use App\Http\Controllers\MasterSectionController;
 
 Route::get('/', function () {
@@ -33,6 +34,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 });
 
+// master item
+Route::middleware('auth')->group(function () {
+    Route::get('/items', [MasterItemController::class, 'index'])->name('items.index');
+    Route::get('/items.create', [MasterItemController::class, 'create'])->name('items.create');
+    Route::post('/items.store', [MasterItemController::class, 'store'])->name('items.store');
+    Route::get('/items.edit/{id}', [MasterItemController::class, 'edit'])->name('items.edit');
+    Route::put('items.update/{id}', [MasterItemController::class, 'update'])->name('items.update');
+    Route::delete('items/{id}', [MasterItemController::class, 'destroy'])->name('items.destroy');
+});
+
 // master tipe item
 Route::middleware('auth')->group(function () {
     Route::get('/item_types', [MasterItemTypeController::class, 'index'])->name('item_types.index');
@@ -53,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('companies/{id}', [MasterCompanyController::class, 'destroy'])->name('companies.destroy');
 });
 
+// department
 Route::middleware('auth')->group(function () {
     Route::get('/departments', [MasterDepartmentController::class, 'index'])->name('departments.index');
     Route::get('/departments.create', [MasterDepartmentController::class, 'create'])->name('departments.create');
