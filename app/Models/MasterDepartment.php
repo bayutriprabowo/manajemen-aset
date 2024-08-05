@@ -13,6 +13,15 @@ class MasterDepartment extends Model
 
     protected $table = 'master_departments';
 
+    protected $fillable = [
+        'name',
+        'address',
+        'company_number',
+        'contact_person',
+        'contact_person_number',
+        'company_id'
+    ];
+
     public function masterSection(): HasMany
     {
         return $this->hasMany(MasterSection::class, 'department_id');

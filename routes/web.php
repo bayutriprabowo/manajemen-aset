@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MasterItemTypeController;
 use App\Http\Controllers\MasterCompanyController;
+use App\Http\Controllers\MasterDepartmentController;
+use App\Http\Controllers\MasterSectionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -49,6 +51,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/companies.edit/{id}', [MasterCompanyController::class, 'edit'])->name('companies.edit');
     Route::put('companies.update/{id}', [MasterCompanyController::class, 'update'])->name('companies.update');
     Route::delete('companies/{id}', [MasterCompanyController::class, 'destroy'])->name('companies.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/departments', [MasterDepartmentController::class, 'index'])->name('departments.index');
+    Route::get('/departments.create', [MasterDepartmentController::class, 'create'])->name('departments.create');
+    Route::post('/departments.store', [MasterDepartmentController::class, 'store'])->name('departments.store');
+    Route::get('/departments.edit/{id}', [MasterDepartmentController::class, 'edit'])->name('departments.edit');
+    Route::put('departments.update/{id}', [MasterDepartmentController::class, 'update'])->name('departments.update');
+    Route::delete('departments/{id}', [MasterDepartmentController::class, 'destroy'])->name('departments.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/sections', [MasterSectionController::class, 'index'])->name('sections.index');
+    Route::get('/sections.create', [MasterSectionController::class, 'create'])->name('sections.create');
+    Route::post('/sections.store', [MasterSectionController::class, 'store'])->name('sections.store');
+    Route::get('/sections.edit/{id}', [MasterSectionController::class, 'edit'])->name('sections.edit');
+    Route::put('sections.update/{id}', [MasterSectionController::class, 'update'])->name('sections.update');
+    Route::delete('sections/{id}', [MasterSectionController::class, 'destroy'])->name('sections.destroy');
 });
 
 require __DIR__ . '/auth.php';
