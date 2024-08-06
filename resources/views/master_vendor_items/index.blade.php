@@ -19,8 +19,7 @@
                         <li class="breadcrumb-item active">Master Vendor Item Tables</li>
                     </ol>
                     <a class="btn btn-success" href="{{ route('vendor_items.create', $id) }}">Tambah
-                        Vendor Item
-                        Item</a>
+                        Vendor Item</a>
                     <div class="card mb-4">
                         <div class="card-body">
                             Data ini merupakan master item/barang dari vendor dan merupakan kewenangan admin, apabila
@@ -55,7 +54,7 @@
                                     @foreach ($vendorItems as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
-                                            <td>{{ $item->masterItems->name }}</td>
+                                            <td>{{ $item->masterItem->name }}</td>
                                             <td>{{ $vendor->name }}</td>
                                             <td><a class="btn btn-warning"
                                                     href="{{ route('vendor_items.edit', $item->id) }}">edit</a>

@@ -13,7 +13,7 @@
             <main>
                 <div class="container-fluid px-4">
                     <!-- isi table -->
-                    <h1>Form Input Item</h1>
+                    <h1>Form Input Vendor Item</h1>
                     <button id="addRow" class="btn btn-success">Add Row</button>
                     <form id="dataForm" action="{{ route('vendor_items.store', $id) }}" method="POST">
                         @csrf

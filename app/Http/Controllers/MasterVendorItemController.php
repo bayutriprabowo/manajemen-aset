@@ -12,8 +12,7 @@ class MasterVendorItemController extends Controller
     public function index($id)
     {
         $vendor = MasterVendor::findOrFail($id);
-        $vendorItems = MasterVendorItem::with('masterItems')->where('vendor_id', $id)->get();
-
+        $vendorItems = MasterVendorItem::with('masterItem')->where('vendor_id', $id)->get();
         return view('master_vendor_items.index', compact(['vendorItems', 'id', 'vendor']));
     }
 
@@ -25,21 +24,21 @@ class MasterVendorItemController extends Controller
         return view('master_vendor_items.create', compact(['masterItems', 'id', 'vendor']));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $data = [];
 
-        for ($i = 0; $i < count($request->name); $i++) {
+        for ($i = 0; $i < count($request->item_id); $i++) {
             $data[] = [
                 'vendor_id' => $request->vendor_id[$i],
                 'item_id' => $request->item_id[$i],
             ];
         }
 
-        MasterVendor::insert($data);
+        MasterVendorItem::insert($data);
 
         // return redirect()->back()->with('success', 'Records inserted successfully!');
-        return redirect()->route('vendors.index')->with('succcess', 'Penambahan berhasil');
+        return redirect()->route('vendor_items.index', $id)->with('succcess', 'Penambahan berhasil');
     }
     // end create
 

@@ -18,11 +18,11 @@ class MasterVendorItem extends Model
 
     public function masterVendor()
     {
-        $this->belongsTo(MasterVendor::class, 'vendor_id');
+        return $this->belongsTo(MasterVendor::class, 'vendor_id');
     }
 
     public function masterItem()
     {
-        $this->belongsTo(MasterItem::class, 'item_id');
+        return $this->belongsTo(MasterItem::class, 'item_id');
     }
 }
