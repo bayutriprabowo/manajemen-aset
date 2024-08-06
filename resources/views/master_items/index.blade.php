@@ -60,7 +60,7 @@
                                             <td>{{ $item->price }}</td>
                                             <td>{{ $item->masterItemType->name }}</td>
                                             <td><a class="btn btn-warning"
-                                                    href="{{ route('departments.edit', $item->id) }}">edit</a>
+                                                    href="{{ route('items.edit', $item->id) }}">edit</a>
                                                 <a href="#" class="btn btn-danger"
                                                     onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this item?')) { document.getElementById('delete-item-{{ $item->id }}').submit(); }">Delete</a>
 

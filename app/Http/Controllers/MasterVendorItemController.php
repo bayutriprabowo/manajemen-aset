@@ -11,17 +11,18 @@ class MasterVendorItemController extends Controller
 {
     public function index($id)
     {
+        $vendor = MasterVendor::findOrFail($id);
         $vendorItems = MasterVendorItem::with('masterItems')->where('vendor_id', $id)->get();
 
-        return view('master_vendor_items.index', compact(['vendorItems']));
+        return view('master_vendor_items.index', compact(['vendorItems', 'id', 'vendor']));
     }
 
 
     public function create($id)
     {
         $masterItems = MasterItem::all();
-        $masterVendor = MasterVendor::where('vendor_id', $id);
-        return view('master_vendors.create', compact(['masterItems', 'masterVendor']));
+        $vendor = MasterVendor::findOrFail($id);
+        return view('master_vendor_items.create', compact(['masterItems', 'id', 'vendor']));
     }
 
     public function store(Request $request)
@@ -30,11 +31,8 @@ class MasterVendorItemController extends Controller
 
         for ($i = 0; $i < count($request->name); $i++) {
             $data[] = [
-                'name' => $request->name[$i],
-                'address' => $request->address[$i],
-                'office_number' => $request->office_number[$i],
-                'owner' => $request->owner[$i],
-                'owner_number' => $request->owner_number[$i],
+                'vendor_id' => $request->vendor_id[$i],
+                'item_id' => $request->item_id[$i],
             ];
         }
 
