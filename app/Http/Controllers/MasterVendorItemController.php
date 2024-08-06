@@ -19,7 +19,15 @@ class MasterVendorItemController extends Controller
 
     public function create($id)
     {
-        $masterItems = MasterItem::all();
+        //$masterItems = MasterItem::all();
+        // Get the item IDs associated with the specific vendor_id
+        $existingItemIds = MasterVendorItem::where('vendor_id', $id)
+            ->pluck('item_id')
+            ->toArray();
+
+        // Get MasterItems where their IDs are not in the existing item IDs
+        $masterItems = MasterItem::whereNotIn('id', $existingItemIds)->get();
+
         $vendor = MasterVendor::findOrFail($id);
         return view('master_vendor_items.create', compact(['masterItems', 'id', 'vendor']));
     }
@@ -30,7 +38,7 @@ class MasterVendorItemController extends Controller
 
         for ($i = 0; $i < count($request->item_id); $i++) {
             $data[] = [
-                'vendor_id' => $request->vendor_id[$i],
+                'vendor_id' => $id,
                 'item_id' => $request->item_id[$i],
             ];
         }
