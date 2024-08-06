@@ -62,6 +62,12 @@ class MasterSectionController extends Controller
     {
         $section = MasterSection::findOrFail($id);
         $section->name = $request->input('name');
+        $section->address = $request->input('address');
+        $section->section_number = $request->input('department_number');
+        $section->contact_person = $request->input('contact_person');
+        $section->contact_person_number = $request->input('contact_person_number');
+        $section->company_id = $request->input('company_id');
+        $section->department_id = $request->input('department_id');
         $section->save();
 
         return redirect()->route('sections.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda

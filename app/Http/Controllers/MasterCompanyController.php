@@ -54,6 +54,10 @@ class MasterCompanyController extends Controller
     {
         $company = MasterCompany::findOrFail($id);
         $company->name = $request->input('name');
+        $company->address = $request->input('address');
+        $company->company_number = $request->input('department_number');
+        $company->contact_person = $request->input('contact_person');
+        $company->contact_person_number = $request->input('contact_person_number');
         $company->save();
 
         return redirect()->route('companies.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda

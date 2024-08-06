@@ -8,7 +8,10 @@ use App\Http\Controllers\MasterItemTypeController;
 use App\Http\Controllers\MasterCompanyController;
 use App\Http\Controllers\MasterDepartmentController;
 use App\Http\Controllers\MasterItemController;
+use App\Http\Controllers\MasterItemStatusController;
 use App\Http\Controllers\MasterSectionController;
+use App\Http\Controllers\MasterVendorController;
+use App\Http\Controllers\MasterVendorItemController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -52,6 +55,34 @@ Route::middleware('auth')->group(function () {
     Route::get('/item_types.edit/{id}', [MasterItemTypeController::class, 'edit'])->name('item_types.edit');
     Route::put('item_types.update/{id}', [MasterItemTypeController::class, 'update'])->name('item_types.update');
     Route::delete('item_types/{id}', [MasterItemTypeController::class, 'destroy'])->name('item_types.destroy');
+});
+// master kondisi barang
+Route::middleware('auth')->group(function () {
+    Route::get('/item_statuses', [MasterItemStatusController::class, 'index'])->name('item_statuses.index');
+    Route::get('/item_statuses.create', [MasterItemStatusController::class, 'create'])->name('item_statuses.create');
+    Route::post('/item_statuses.store', [MasterItemStatusController::class, 'store'])->name('item_statuses.store');
+    Route::get('/item_statuses.edit/{id}', [MasterItemStatusController::class, 'edit'])->name('item_statuses.edit');
+    Route::put('item_statuses.update/{id}', [MasterItemStatusController::class, 'update'])->name('item_statuses.update');
+    Route::delete('item_statuses/{id}', [MasterItemStatusController::class, 'destroy'])->name('item_statuses.destroy');
+});
+
+// vendor
+Route::middleware('auth')->group(function () {
+    Route::get('/vendors', [MasterVendorController::class, 'index'])->name('vendors.index');
+    Route::get('/vendors.create', [MasterVendorController::class, 'create'])->name('vendors.create');
+    Route::post('/vendors.store', [MasterVendorController::class, 'store'])->name('vendors.store');
+    Route::get('/vendors.edit/{id}', [MasterVendorController::class, 'edit'])->name('vendors.edit');
+    Route::put('vendors.update/{id}', [MasterVendorController::class, 'update'])->name('vendors.update');
+    Route::delete('vendors/{id}', [MasterVendorController::class, 'destroy'])->name('vendors.destroy');
+});
+// vendor item
+Route::middleware('auth')->group(function () {
+    Route::get('/vendor_items/{id}', [MasterVendorItemController::class, 'index'])->name('vendor_items.index');
+    Route::get('/vendor_items.create/{id}', [MasterVendorItemController::class, 'create'])->name('vendor_items.create');
+    Route::post('/vendor_items.store/{id}', [MasterVendorItemController::class, 'store'])->name('vendor_items.store');
+    Route::get('/vendor_items.edit/{id}', [MasterVendorItemController::class, 'edit'])->name('vendor_items.edit');
+    Route::put('vendor_items.update/{id}', [MasterVendorItemController::class, 'update'])->name('vendor_items.update');
+    Route::delete('vendor_items/{id}', [MasterVendorItemController::class, 'destroy'])->name('vendor_items.destroy');
 });
 
 // company

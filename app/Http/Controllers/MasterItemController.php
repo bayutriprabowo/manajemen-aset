@@ -53,6 +53,8 @@ class MasterItemController extends Controller
     {
         $item = MasterItem::findOrFail($id);
         $item->name = $request->input('name');
+        $item->price = $request->input('price');
+        $item->type_id = $request->input('type_id');
         $item->save();
 
         return redirect()->route('items.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda

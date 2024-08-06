@@ -58,6 +58,11 @@ class MasterDepartmentController extends Controller
     {
         $department = MasterDepartment::findOrFail($id);
         $department->name = $request->input('name');
+        $department->address = $request->input('address');
+        $department->department_number = $request->input('department_number');
+        $department->contact_person = $request->input('contact_person');
+        $department->contact_person_number = $request->input('contact_person_number');
+        $department->company_id = $request->input('company_id');
         $department->save();
 
         return redirect()->route('departments.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda

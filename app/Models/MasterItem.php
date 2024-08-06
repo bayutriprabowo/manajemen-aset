@@ -23,6 +23,11 @@ class MasterItem extends Model
         return $this->belongsTo(MasterItemType::class, 'type_id');
     }
 
+    public function masterVendorItem()
+    {
+        return $this->hasMany(MasterVendorItem::class, 'item_id');
+    }
+
     // public function masterCompany(): BelongsTo
     // {
     //     return $this->belongsTo(MasterCompany::class, 'company_id');
