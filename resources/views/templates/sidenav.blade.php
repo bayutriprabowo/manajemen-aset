@@ -41,8 +41,6 @@
                         @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
                             <a class="nav-link" href="{{ route('departments.index') }}">Master Departemen</a>
                         @endif
-                        <a class="nav-link" href="master1.html">Master 1</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">Master 2</a>
                     </nav>
                 </div>
 

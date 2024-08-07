@@ -59,10 +59,10 @@
                                             <td><a class="btn btn-warning"
                                                     href="{{ route('vendor_items.edit', $item->id) }}">edit</a>
                                                 <a href="#" class="btn btn-danger"
-                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this item?')) { document.getElementById('delete-item-{{ $item->id }}').submit(); }">Delete</a>
+                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this item?')) { document.getElementById('delete-vendor-item-{{ $item->id }}').submit(); }">Delete</a>
 
-                                                <form id="delete-item-{{ $item->id }}"
-                                                    action="{{ route('vendor_items.destroy', $item->id) }}"
+                                                <form id="delete-vendor-item-{{ $item->id }}"
+                                                    action="{{ route('vendor_items.destroy', ['id' => $item->id, 'vendorId' => $id]) }}"
                                                     method="POST" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')

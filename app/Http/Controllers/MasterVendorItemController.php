@@ -73,11 +73,11 @@ class MasterVendorItemController extends Controller
     // end edit
 
     // delete
-    public function destroy($id)
+    public function destroy($id, $vendorId)
     {
-        $vendor = MasterVendor::findOrFail($id);
-        $vendor->delete();
+        $vendorItem = MasterVendorItem::findOrFail($id);
+        $vendorItem->delete();
 
-        return redirect()->route('vendors.index')->with('success', 'compeny deleted successfully');
+        return redirect()->route('vendor_items.index', $vendorId)->with('success', 'compeny deleted successfully');
     }
 }
