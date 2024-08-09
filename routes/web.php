@@ -80,8 +80,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/vendor_items/{id}', [MasterVendorItemController::class, 'index'])->name('vendor_items.index');
     Route::get('/vendor_items.create/{id}', [MasterVendorItemController::class, 'create'])->name('vendor_items.create');
     Route::post('/vendor_items.store/{id}', [MasterVendorItemController::class, 'store'])->name('vendor_items.store');
-    Route::get('/vendor_items.edit/{id}', [MasterVendorItemController::class, 'edit'])->name('vendor_items.edit');
-    Route::put('vendor_items.update/{id}', [MasterVendorItemController::class, 'update'])->name('vendor_items.update');
     Route::delete('vendor_items/{id}/{vendorId}', [MasterVendorItemController::class, 'destroy'])->name('vendor_items.destroy');
 });
 

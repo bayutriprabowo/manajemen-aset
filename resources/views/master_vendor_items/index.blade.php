@@ -56,8 +56,7 @@
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->masterItem->name }}</td>
                                             <td>{{ $vendor->name }}</td>
-                                            <td><a class="btn btn-warning"
-                                                    href="{{ route('vendor_items.edit', $item->id) }}">edit</a>
+                                            <td>
                                                 <a href="#" class="btn btn-danger"
                                                     onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this item?')) { document.getElementById('delete-vendor-item-{{ $item->id }}').submit(); }">Delete</a>
 

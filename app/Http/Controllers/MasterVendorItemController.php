@@ -58,20 +58,6 @@ class MasterVendorItemController extends Controller
         return view('master_vendors.edit', compact(['vendor']));
     }
 
-    public function update(Request $request, $id)
-    {
-        $vendor = MasterVendor::findOrFail($id);
-        $vendor->name = $request->input('name');
-        $vendor->address = $request->input('address');
-        $vendor->office_number = $request->input('office_number');
-        $vendor->owner = $request->input('owner');
-        $vendor->owner_number = $request->input('owner_number');
-        $vendor->save();
-
-        return redirect()->route('vendors.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda
-    }
-    // end edit
-
     // delete
     public function destroy($id, $vendorId)
     {

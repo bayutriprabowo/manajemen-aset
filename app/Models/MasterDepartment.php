@@ -16,7 +16,7 @@ class MasterDepartment extends Model
     protected $fillable = [
         'name',
         'address',
-        'company_number',
+        'department_number',
         'contact_person',
         'contact_person_number',
         'company_id'
