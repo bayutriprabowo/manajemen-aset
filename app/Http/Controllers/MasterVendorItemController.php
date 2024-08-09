@@ -50,14 +50,6 @@ class MasterVendorItemController extends Controller
     }
     // end create
 
-
-    // edit
-    public function edit($id)
-    {
-        $vendor = MasterVendor::findOrFail($id);
-        return view('master_vendors.edit', compact(['vendor']));
-    }
-
     // delete
     public function destroy($id, $vendorId)
     {
