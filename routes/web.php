@@ -12,6 +12,7 @@ use App\Http\Controllers\MasterItemStatusController;
 use App\Http\Controllers\MasterSectionController;
 use App\Http\Controllers\MasterVendorController;
 use App\Http\Controllers\MasterVendorItemController;
+use App\Http\Controllers\TransactionItemProcurementController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -110,6 +111,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/sections.edit/{id}', [MasterSectionController::class, 'edit'])->name('sections.edit');
     Route::put('sections.update/{id}', [MasterSectionController::class, 'update'])->name('sections.update');
     Route::delete('sections/{id}', [MasterSectionController::class, 'destroy'])->name('sections.destroy');
+});
+// procurement belum selesai
+Route::middleware('auth')->group(function () {
+    Route::get('/procurements', [TransactionItemProcurementController::class, 'index'])->name('procurements.index');
+    Route::get('/procurements.create', [TransactionItemProcurementController::class, 'create'])->name('procurements.create');
+    Route::post('/procurements.store', [TransactionItemProcurementController::class, 'store'])->name('procurements.store');
+    Route::get('/procurement.edit/{id}', [TransactionItemProcurementController::class, 'edit'])->name('procurements.edit');
+    Route::put('procurements.update/{id}', [TransactionItemProcurementController::class, 'update'])->name('procurements.update');
+    Route::delete('procurements/{id}', [TransactionItemProcurementController::class, 'destroy'])->name('procurements.destroy');
 });
 
 require __DIR__ . '/auth.php';
