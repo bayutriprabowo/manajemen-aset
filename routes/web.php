@@ -120,6 +120,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/procurement.edit/{id}', [TransactionItemProcurementController::class, 'edit'])->name('procurements.edit');
     Route::put('procurements.update/{id}', [TransactionItemProcurementController::class, 'update'])->name('procurements.update');
     Route::delete('procurements/{id}', [TransactionItemProcurementController::class, 'destroy'])->name('procurements.destroy');
+
+    // procurement detail untuk approvement
+    Route::get('/procurements.detail/{id}', [TransactionItemProcurementController::class, 'detail'])->name('procurements.detail');
 });
 
 require __DIR__ . '/auth.php';

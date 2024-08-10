@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterItem;
+use App\Models\TransactionItemProcurementDetail;
 use App\Models\TransactionItemProcurementHeader;
 use Illuminate\Http\Request;
 
@@ -15,12 +16,13 @@ class TransactionItemProcurementController extends Controller
     }
 
 
+
     public function create()
     {
-        $idProcurementHeader = TransactionItemProcurementHeader::latest()->first();
-        $newId = $idProcurementHeader + 1;
+        $ProcurementHeader = TransactionItemProcurementHeader::latest()->first();
+        $newId = $ProcurementHeader + 1;
         $masterItems = MasterItem::all();
-        return view('master_vendors.create', compact(['newId', 'masterItems']));
+        return view('procurements.create', compact(['newId', 'masterItems']));
     }
 
     public function store(Request $request)
@@ -74,5 +76,11 @@ class TransactionItemProcurementController extends Controller
 
         return redirect()->route('vendors.index')->with('success', 'compeny deleted successfully');
     }
+
+    public function detail($id)
+    {
+        $procurementHeaders = TransactionItemProcurementHeader::findOrFail($id);
+        $procurementDetails = TransactionItemProcurementDetail::where('header_id', $id)->get();
+        return view('procurements.detail', compact(['procurementHeaders']));
     }
 }

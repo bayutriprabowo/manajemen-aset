@@ -56,7 +56,7 @@
                                 </tfoot>
                                 <tbody>
 
-                                    @foreach ($procurementHeader as $header)
+                                    @foreach ($procurementHeaders as $header)
                                         <tr>
                                             <td>{{ $header->id }}</td>
                                             <td>{{ $header->transaction_date }}</td>
@@ -66,16 +66,22 @@
                                             <td>{{ $header->total }}</td>
 
                                             <td>
-                                                <a class="btn btn-primary"
-                                                    href="{{ route('procurement_details.index', $header->id) }}">Lihat
-                                                    Detail Pengadaan</a>
-                                                {{-- <a class="btn btn-warning" href="{{ route('vendors.edit', $vendor->id) }}">edit</a> --}}
-                                                <a href="#" class="btn btn-danger"
-                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this vendor?')) { document.getElementById('delete-vendor-{{ $vendor->id }}').submit(); }">Delete</a>
+                                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                                    <a class="btn btn-primary"
+                                                        href="{{ route('procurements.detail', $header->id) }}">Lihat
+                                                        Detail Pengadaan</a>
+                                                @endif
 
-                                                <form id="delete-vendor-{{ $vendor->id }}"
-                                                    action="{{ route('vendors.destroy', $vendor->id) }}" method="POST"
-                                                    style="display: none;">
+                                                {{-- <a class="btn btn-warning" href="{{ route('vendors.edit', $vendor->id) }}">edit</a> --}}
+                                                @if (auth()->user()->masterRole->name == 'superuser')
+                                                    <a href="#" class="btn btn-danger"
+                                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this procurement?')) { document.getElementById('delete-procurement-{{ $header->id }}').submit(); }">Delete</a>
+                                                @endif
+
+
+                                                <form id="delete-procurement-{{ $header->id }}"
+                                                    action="{{ route('procurements.destroy', $header->id) }}"
+                                                    method="POST" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
                                                 </form>
