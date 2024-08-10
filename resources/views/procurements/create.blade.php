@@ -34,10 +34,10 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" name="id_header" id="id_header" value="{{ $newId }}"
-                                            readonly></td>
+                                    <td><input type="text" name="id_header" id="id_header"
+                                            data-header="{{ $newId }}" value="{{ $newId }}" readonly></td>
                                     <td><input type="date" name="transaction_date"></td>
-                                    <td><select name="status_select">
+                                    <td><select name="status">
                                             <option value="in_progress">sedang proses</option>
                                         </select></td>
                                     <td><input type="text" name="code" value="PRO-{{ $newId }}" readonly>
@@ -119,11 +119,12 @@
                         var row = `<tr>
                                         <td><input type="text" name="item_name[]" value="${itemName}" readonly class="form-control"></td>
                                         <td><input type="text" name="quantity[]" value="" class="form-control quantity"></td>
-                                        <td><input type="text" name="item_price[]" value="" class="form-control item_price"></td>
+                                        <td><input type="text" name="price[]" value="" class="form-control item_price"></td>
                                         <td><input type="text" name="subtotal[]" value="" readonly class="form-control subtotal"></td>
+                                        <td><input type="text" name="header_id[]" readonly value="${headerId}"></td>
                                         <td><button type="button" class="btn btn-danger delete-row">Delete</button></td>
                                         <input type="hidden" name="item_id[]" value="${itemId}">
-                                        <input type="hidden" name="header_id[]" value="${headerId}">
+                                        
                                     </tr>`;
 
                         $('#datatable tbody').append(row);

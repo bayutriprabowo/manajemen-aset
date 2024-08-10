@@ -117,12 +117,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/procurements', [TransactionItemProcurementController::class, 'index'])->name('procurements.index');
     Route::get('/procurements.create', [TransactionItemProcurementController::class, 'create'])->name('procurements.create');
     Route::post('/procurements.store', [TransactionItemProcurementController::class, 'store'])->name('procurements.store');
-    Route::get('/procurement.edit/{id}', [TransactionItemProcurementController::class, 'edit'])->name('procurements.edit');
-    Route::put('procurements.update/{id}', [TransactionItemProcurementController::class, 'update'])->name('procurements.update');
+    // Route::get('/procurement.edit/{id}', [TransactionItemProcurementController::class, 'edit'])->name('procurements.edit');
+    // Route::put('procurements.update/{id}', [TransactionItemProcurementController::class, 'update'])->name('procurements.update');
     Route::delete('procurements/{id}', [TransactionItemProcurementController::class, 'destroy'])->name('procurements.destroy');
 
     // procurement detail untuk approvement
     Route::get('/procurements.detail/{id}', [TransactionItemProcurementController::class, 'detail'])->name('procurements.detail');
+    Route::put('procurements.approve/{id}', [TransactionItemProcurementController::class, 'approve'])->name('procurements.approve');
+    Route::put('procurements.reject/{id}', [TransactionItemProcurementController::class, 'reject'])->name('procurements.reject');
 });
 
 require __DIR__ . '/auth.php';

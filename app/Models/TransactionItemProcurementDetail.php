@@ -23,4 +23,9 @@ class TransactionItemProcurementDetail extends Model
     {
         return $this->belongsTo(TransactionItemProcurementHeader::class, 'header_id');
     }
+
+    public function masterItem()
+    {
+        return $this->belongsTo(MasterItem::class, 'item_id');
+    }
 }

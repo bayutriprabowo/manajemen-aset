@@ -13,10 +13,10 @@
 
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Procurement Tables</h1>
+                    <h1 class="mt-4">Transaction Procurement Tables</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Master Procurement Tables</li>
+                        <li class="breadcrumb-item active">Transaction Procurement Tables</li>
                     </ol>
                     <a class="btn btn-success" href="{{ route('procurements.create') }}">Tambah Pengadaan</a>
                     <div class="card mb-4">
@@ -66,10 +66,20 @@
                                             <td>{{ $header->total }}</td>
 
                                             <td>
+                                                @if (auth()->user()->masterRole->name == 'superuser')
+                                                    <a href="#" class="btn btn-success"
+                                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to approve this procurement?')) { document.getElementById('approve-procurement-{{ $header->id }}').submit(); }">Approve</a>
+                                                @endif
+
                                                 @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
                                                     <a class="btn btn-primary"
                                                         href="{{ route('procurements.detail', $header->id) }}">Lihat
                                                         Detail Pengadaan</a>
+                                                @endif
+
+                                                @if (auth()->user()->masterRole->name == 'superuser')
+                                                    <a href="#" class="btn btn-warning"
+                                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to reject this procurement?')) { document.getElementById('reject-procurement-{{ $header->id }}').submit(); }">Reject</a>
                                                 @endif
 
                                                 {{-- <a class="btn btn-warning" href="{{ route('vendors.edit', $vendor->id) }}">edit</a> --}}
@@ -84,6 +94,22 @@
                                                     method="POST" style="display: none;">
                                                     @csrf
                                                     @method('DELETE')
+                                                </form>
+
+                                                <form id="approve-procurement-{{ $header->id }}"
+                                                    action="{{ route('procurements.approve', $header->id) }}"
+                                                    method="POST" style="display: none;">
+                                                    <input name="status" type="text" value="approved">
+                                                    @csrf
+                                                    @method('PUT')
+                                                </form>
+
+                                                <form id="reject-procurement-{{ $header->id }}"
+                                                    action="{{ route('procurements.reject', $header->id) }}"
+                                                    method="POST" style="display: none;">
+                                                    <input name="status" type="text" value="rejected">
+                                                    @csrf
+                                                    @method('PUT')
                                                 </form>
                                             </td>
                                         </tr>

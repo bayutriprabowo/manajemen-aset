@@ -53,6 +53,7 @@
                 <div class="collapse" id="collapseLayouts2" aria-labelledby="headingOne"
                     data-bs-parent="#sidenavAccordion">
                     <nav class="sb-sidenav-menu-nested nav">
+                        <a class="nav-link" href="{{ route('procurements.index') }}">Pengadaan</a>
                         <a class="nav-link" href="layout-static.html">Transaction 1</a>
                         <a class="nav-link" href="layout-sidenav-light.html">Transaction 2</a>
                     </nav>
