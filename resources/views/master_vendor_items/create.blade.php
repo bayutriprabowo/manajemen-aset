@@ -19,10 +19,11 @@
                     <select name="item" id="addRow" class="form-control item-id mb-3">
                         <option value="">Pilih Item</option>
                         @foreach ($masterItems as $item)
-                            <option value="{{ $item->id }}" data-nama="{{ $item->name }}" data-harga="{{ $item->price }}">{{ $item->name }}</option>
+                            <option value="{{ $item->id }}" data-nama="{{ $item->name }}"
+                                data-harga="{{ $item->price }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
-                    
+
 
                     <form id="dataForm" action="{{ route('vendor_items.store', $id) }}" method="POST">
                         @csrf
@@ -68,7 +69,7 @@
                 var itemId = $(this).val();
                 var itemName = $(this).find(':selected').data('nama');
                 var itemPrice = $(this).find(':selected').data('harga');
-                
+
                 if (itemId && itemName && itemPrice) {
                     // Check for duplicates
                     var isDuplicate = false;
@@ -87,12 +88,12 @@
                                         <td><button type="button" class="btn btn-danger delete-row">Delete</button></td>
                                         <input type="hidden" name="item_id[]" value="${itemId}">
                                     </tr>`;
-                        
+
                         $('#datatable tbody').append(row);
                     } else {
                         alert('This item is already added.');
                     }
-                    
+
                     // Clear the select box
                     $(this).val('');
                 }

@@ -21,12 +21,10 @@
 
                     <form id="dataForm" action="{{ route('procurements.store', $newId) }}" method="POST">
                         @csrf
-                        <table id="datatablesSimple">
+                        <table id="">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>Tanggal</th>
-                                    <th>Status</th>
                                     <th>Kode</th>
                                     <th>Keterangan</th>
                                     <th>Total</th>
@@ -34,15 +32,13 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" name="id_header" id="id_header"
-                                            data-header="{{ $newId }}" value="{{ $newId }}" readonly></td>
-                                    <td><input type="date" name="transaction_date"></td>
-                                    <td><select name="status">
-                                            <option value="in_progress">sedang proses</option>
-                                        </select></td>
+                                    <input type="hidden" name="id_header" id="id_header"
+                                        data-header="{{ $newId }}" value="{{ $newId }}" readonly>
+                                    <td><input type="date" name="transaction_date" required></td>
+                                    <input type="hidden" name="status" value="in_progress" readonly>
                                     <td><input type="text" name="code" value="PRO-{{ $newId }}" readonly>
                                     </td>
-                                    <td><input type="text" name="description"></td>
+                                    <td><input type="text" name="description" required></td>
                                     <td><input type="text" name="total" id="total" value="0.00" readonly>
                                     </td>
                                 </tr>
@@ -66,7 +62,6 @@
                                     <th>Kuantitas/Jumlah</th>
                                     <th>Harga</th>
                                     <th>Subtotal</th>
-                                    <th>Header ID</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,6 +94,19 @@
 
     <script>
         $(document).ready(function() {
+
+            $('input[name="transaction_date"]').on('change', function() {
+                var selectedDate = $(this).val(); // Ambil tanggal yang dipilih
+                var formattedDate = selectedDate.replace(/-/g, ''); // Format tanggal menjadi YYYYMMDD
+
+                var headerId = $('#id_header').val(); // Ambil id_header
+                var paddedHeaderId = headerId.padStart(4, '0'); // untuk membuat angka tetap 4 digit
+                var newCode = `PRO-${formattedDate}${paddedHeaderId}`; // Gabungkan untuk membuat kode baru
+
+                $('input[name="code"]').val(newCode); // Perbarui nilai input kode
+            });
+
+
             $('#addRow').change(function() {
                 var itemId = $(this).val();
                 var itemName = $(this).find(':selected').data('nama');
@@ -117,11 +125,11 @@
 
                     if (!isDuplicate) {
                         var row = `<tr>
-                                        <td><input type="text" name="item_name[]" value="${itemName}" readonly class="form-control"></td>
-                                        <td><input type="text" name="quantity[]" value="" class="form-control quantity"></td>
-                                        <td><input type="text" name="price[]" value="" class="form-control item_price"></td>
+                                        <td><input type="text" name="item_name[]" value="${itemName}" readonly class="form-control" required></td>
+                                        <td><input type="text" name="quantity[]" value="" class="form-control quantity" required></td>
+                                        <td><input type="text" name="price[]" value="" class="form-control item_price" required></td>
                                         <td><input type="text" name="subtotal[]" value="" readonly class="form-control subtotal"></td>
-                                        <td><input type="text" name="header_id[]" readonly value="${headerId}"></td>
+                                        <input type="hidden" name="header_id[]" readonly value="${headerId}">
                                         <td><button type="button" class="btn btn-danger delete-row">Delete</button></td>
                                         <input type="hidden" name="item_id[]" value="${itemId}">
                                         
