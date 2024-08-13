@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterDepartment;
 use App\Models\MasterItem;
 use App\Models\TransactionItemProcurementDetail;
 use App\Models\TransactionItemProcurementHeader;
+use App\Models\TransactionStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
@@ -25,7 +27,8 @@ class TransactionItemProcurementController extends Controller
         $maxId = TransactionItemProcurementHeader::max('id');
         $newId = $maxId + 1;
         $masterItems = MasterItem::all();
-        return view('procurements.create', compact(['newId', 'masterItems']));
+        $masterDepartments = MasterDepartment::all();
+        return view('procurements.create', compact(['newId', 'masterItems', 'masterDepartments']));
     }
 
     public function store(Request $request)
@@ -43,6 +46,7 @@ class TransactionItemProcurementController extends Controller
                 'code' => $request->code,
                 'description' => $request->description,
                 'total' => $request->total,
+
             ];
 
             for ($i = 0; $i < count($request->item_id); $i++) {
@@ -52,8 +56,10 @@ class TransactionItemProcurementController extends Controller
                     'price' => $request->price[$i],
                     'subtotal' => $request->subtotal[$i],
                     'header_id' => $request->header_id[$i],
+                    'department_id' => $request->department_id[$i],
                 ];
             }
+
 
             TransactionItemProcurementHeader::insert($dataHeader);
             TransactionItemProcurementDetail::insert($dataDetails);
@@ -129,15 +135,49 @@ class TransactionItemProcurementController extends Controller
     public function detail($id)
     {
         $procurementHeader = TransactionItemProcurementHeader::findOrFail($id);
-        $procurementDetails = TransactionItemProcurementDetail::with('masterItem')->where('header_id', $id)->get();
+        $procurementDetails = TransactionItemProcurementDetail::with(['masterItem', 'masterDepartment'])->where('header_id', $id)->get();
         return view('procurements.detail', compact(['procurementHeader', 'procurementDetails']));
     }
 
     public function approve(Request $request, $id)
     {
-        $sprocurementHeader = TransactionItemProcurementHeader::findOrFail($id);
-        $sprocurementHeader->status = $request->input('status');
-        $sprocurementHeader->save();
+        $procurementHeader = TransactionItemProcurementHeader::findOrFail($id);
+        $procurementHeader->status = $request->input('status');
+        $procurementHeader->save();
+
+
+        $procurementDetails = TransactionItemProcurementDetail::where('header_id', $id)->get();
+        foreach ($procurementDetails as $detail) {
+            DB::beginTransaction();
+
+            try {
+                $dataDetails = [];
+
+
+                $dataDetails[] = [
+                    'item_id' => $detail->item_id,
+                    'code' => $procurementHeader->code,
+                    'in' => $detail->quantity,
+                    'out' => 0,
+                    'transaction_date' => $procurementHeader->transaction_date,
+                    'department_id' => $detail->department_id,
+                ];
+
+
+                TransactionStock::insert($dataDetails);
+                DB::commit();
+                // return redirect()->back()->with('success', 'Records inserted successfully!');
+                return redirect()->route('procurements.index')->with('succcess', 'Penambahan berhasil');
+            } catch (\Exception $e) {
+                // Rollback the transaction if something went wrong
+                DB::rollBack();
+
+                // Redirect with error message
+                return redirect()->route('procurements.create')->with('error', 'Failed to add procurement');
+            }
+        }
+
+
 
         return redirect()->route('procurements.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda
     }

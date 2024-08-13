@@ -22,13 +22,18 @@ class MasterDepartment extends Model
         'company_id'
     ];
 
-    public function masterSection(): HasMany
-    {
-        return $this->hasMany(MasterSection::class, 'department_id');
-    }
+    // public function masterSection(): HasMany
+    // {
+    //     return $this->hasMany(MasterSection::class, 'department_id');
+    // }
 
     public function masterCompany(): BelongsTo
     {
         return $this->belongsTo(MasterCompany::class, 'company_id');
+    }
+
+    public function transactionItemProcurementDetail(): HasMany
+    {
+        return $this->hasMany(TransactionItemProcurementDetail::class, 'department_id');
     }
 }

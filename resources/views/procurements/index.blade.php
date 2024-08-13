@@ -60,32 +60,49 @@
                                         <tr>
                                             <td>{{ $header->id }}</td>
                                             <td>{{ $header->transaction_date }}</td>
-                                            <td>{{ $header->status }}</td>
+                                            <td>
+                                                {{-- {{ $header->status }} --}}
+                                                @if ($header->status == 'approved')
+                                                    <button class="btn btn-success btn-sm">Disetujui</button>
+                                                @elseif ($header->status == 'rejected')
+                                                    <button class="btn btn-warning btn-sm">Ditolak</button>
+                                                @elseif ($header->status == 'in_progress')
+                                                    <button class="btn btn-primary btn-sm">Proses</button>
+                                                @endif
+                                            </td>
                                             <td>{{ $header->code }}</td>
                                             <td>{{ $header->description }}</td>
-                                            <td>{{ $header->total }}</td>
+                                            <td>{{ number_format($header->total, 2, ',', '.') }}</td>
+
 
                                             <td>
                                                 @if (auth()->user()->masterRole->name == 'superuser')
-                                                    <a href="#" class="btn btn-success"
-                                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to approve this procurement?')) { document.getElementById('approve-procurement-{{ $header->id }}').submit(); }">Approve</a>
+                                                    @if ($header->status != 'approved')
+                                                        <a href="#" class="btn btn-success"
+                                                            onclick="event.preventDefault(); if(confirm('Are you sure you want to approve this procurement?')) { document.getElementById('approve-procurement-{{ $header->id }}').submit(); }"><i
+                                                                class="fa fa-check-circle" aria-hidden="true"></i></a>
+                                                    @endif
                                                 @endif
 
                                                 @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
                                                     <a class="btn btn-primary"
-                                                        href="{{ route('procurements.detail', $header->id) }}">Lihat
-                                                        Detail Pengadaan</a>
+                                                        href="{{ route('procurements.detail', $header->id) }}"><i
+                                                            class="fa fa-eye" aria-hidden="true"></i></a>
                                                 @endif
 
                                                 @if (auth()->user()->masterRole->name == 'superuser')
-                                                    <a href="#" class="btn btn-warning"
-                                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to reject this procurement?')) { document.getElementById('reject-procurement-{{ $header->id }}').submit(); }">Reject</a>
+                                                    @if ($header->status != 'rejected')
+                                                        <a href="#" class="btn btn-warning"
+                                                            onclick="event.preventDefault(); if(confirm('Are you sure you want to reject this procurement?')) { document.getElementById('reject-procurement-{{ $header->id }}').submit(); }"><i
+                                                                class="fa fa-ban" aria-hidden="true"></i></i></a>
+                                                    @endif
                                                 @endif
 
                                                 {{-- <a class="btn btn-warning" href="{{ route('vendors.edit', $vendor->id) }}">edit</a> --}}
                                                 @if (auth()->user()->masterRole->name == 'superuser')
                                                     <a href="#" class="btn btn-danger"
-                                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this procurement?')) { document.getElementById('delete-procurement-{{ $header->id }}').submit(); }">Delete</a>
+                                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this procurement?')) { document.getElementById('delete-procurement-{{ $header->id }}').submit(); }"><i
+                                                            class="fa fa-trash" aria-hidden="true"></i></a>
                                                 @endif
 
 

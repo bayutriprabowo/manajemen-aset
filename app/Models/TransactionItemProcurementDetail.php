@@ -16,7 +16,8 @@ class TransactionItemProcurementDetail extends Model
         'quantity',
         'price',
         'subtotal',
-        'header_id'
+        'header_id',
+        'department_id',
     ];
 
     public function procurementHeader()
@@ -27,5 +28,10 @@ class TransactionItemProcurementDetail extends Model
     public function masterItem()
     {
         return $this->belongsTo(MasterItem::class, 'item_id');
+    }
+
+    public function masterDepartment()
+    {
+        return $this->belongsTo(MasterDepartment::class, 'department_id');
     }
 }

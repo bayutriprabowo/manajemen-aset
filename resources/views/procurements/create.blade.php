@@ -62,6 +62,7 @@
                                     <th>Kuantitas/Jumlah</th>
                                     <th>Harga</th>
                                     <th>Subtotal</th>
+                                    <th>Departemen</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -123,15 +124,26 @@
                         }
                     });
 
+
                     if (!isDuplicate) {
+                        var optionsDepartment = `<option value="">Pilih Departemen</option>
+                            @foreach ($masterDepartments as $department)
+                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                            @endforeach`;
                         var row = `<tr>
                                         <td><input type="text" name="item_name[]" value="${itemName}" readonly class="form-control" required></td>
                                         <td><input type="text" name="quantity[]" value="" class="form-control quantity" required></td>
                                         <td><input type="text" name="price[]" value="" class="form-control item_price" required></td>
                                         <td><input type="text" name="subtotal[]" value="" readonly class="form-control subtotal"></td>
                                         <input type="hidden" name="header_id[]" readonly value="${headerId}">
+                                        <td>
+                                            <select name="department_id[]" class="form-control" required>
+                                                ${optionsDepartment}
+                                            </select>
+                                        </td>
                                         <td><button type="button" class="btn btn-danger delete-row">Delete</button></td>
                                         <input type="hidden" name="item_id[]" value="${itemId}">
+                                        
                                         
                                     </tr>`;
 

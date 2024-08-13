@@ -31,76 +31,93 @@
                             DataTable Pengadaan
                         </div>
                         <div class="card-body">
-
                             <!-- procurement header -->
-                            <table id="datatables">
+                            <table class="table" id="datatables">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Tanggal</th>
-                                        <th>Status</th>
-                                        <th>Kode</th>
-                                        <th>Keterangan</th>
-                                        <th>Total</th>
-                                        <th>Action</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Tanggal</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Kode</th>
+                                        <th scope="col">Keterangan</th>
+                                        <th scope="col">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>{{ $procurementHeader->id }}</td>
                                         <td>{{ $procurementHeader->transaction_date }}</td>
-                                        <td>{{ $procurementHeader->status }}</td>
+                                        <td>
+                                            {{-- {{ $procurementHeader->status }} --}}
+                                            @if ($procurementHeader->status == 'approved')
+                                                <button class="btn btn-success btn-sm">Disetujui</button>
+                                            @elseif ($procurementHeader->status == 'rejected')
+                                                <button class="btn btn-warning btn-sm">Ditolak</button>
+                                            @elseif ($procurementHeader->status == 'in_progress')
+                                                <button class="btn btn-primary btn-sm">Proses</button>
+                                            @endif
+                                        </td>
                                         <td>{{ $procurementHeader->code }}</td>
                                         <td>{{ $procurementHeader->description }}</td>
-                                        <td>{{ $procurementHeader->total }}</td>
+                                        <td>{{ number_format($procurementHeader->total, 2, ',', '.') }}</td>
 
                                         <td>
-                                            @if (auth()->user()->masterRole->name == 'superuser')
-                                                <a href="#" class="btn btn-success"
-                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to approve this procurement?')) { document.getElementById('approve-procurement-{{ $procurementHeader->id }}').submit(); }">Approve</a>
-                                            @endif
 
-                                            @if (auth()->user()->masterRole->name == 'superuser')
-                                                <a href="#" class="btn btn-warning"
-                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to reject this procurement?')) { document.getElementById('reject-procurement-{{ $procurementHeader->id }}').submit(); }">Reject</a>
-                                            @endif
-
-                                            {{-- <a class="btn btn-warning" href="{{ route('vendors.edit', $vendor->id) }}">edit</a> --}}
-                                            @if (auth()->user()->masterRole->name == 'superuser')
-                                                <a href="#" class="btn btn-danger"
-                                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this procurement?')) { document.getElementById('delete-procurement-{{ $procurementHeader->id }}').submit(); }">Delete</a>
-                                            @endif
-
-
-                                            <form id="delete-procurement-{{ $procurementHeader->id }}"
-                                                action="{{ route('procurements.destroy', $procurementHeader->id) }}"
-                                                method="POST" style="display: none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
-
-                                            <form id="approve-procurement-{{ $procurementHeader->id }}"
-                                                action="{{ route('procurements.approve', $procurementHeader->id) }}"
-                                                method="POST" style="display: none;">
-                                                <input name="status" type="text" value="approved">
-                                                @csrf
-                                                @method('PUT')
-                                            </form>
-
-                                            <form id="reject-procurement-{{ $procurementHeader->id }}"
-                                                action="{{ route('procurements.reject', $procurementHeader->id) }}"
-                                                method="POST" style="display: none;">
-                                                <input name="status" type="text" value="rejectd">
-                                                @csrf
-                                                @method('PUT')
-                                            </form>
                                         </td>
                                     </tr>
-                                    </tr>
+
 
                                 </tbody>
+
                             </table>
                             <!-- end header -->
+                            @if (auth()->user()->masterRole->name == 'superuser')
+                                @if ($procurementHeader->status != 'approved')
+                                    <a href="#" class="btn btn-success"
+                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to approve this procurement?')) { document.getElementById('approve-procurement-{{ $procurementHeader->id }}').submit(); }"><i
+                                            class="fa fa-check-circle" aria-hidden="true"></i></a>
+                                @endif
+                            @endif
+
+                            @if (auth()->user()->masterRole->name == 'superuser')
+                                @if ($procurementHeader->status != 'rejected')
+                                    <a href="#" class="btn btn-warning"
+                                        onclick="event.preventDefault(); if(confirm('Are you sure you want to reject this procurement?')) { document.getElementById('reject-procurement-{{ $procurementHeader->id }}').submit(); }"><i
+                                            class="fa fa-ban" aria-hidden="true"></i></a>
+                                @endif
+
+                            @endif
+
+                            {{-- <a class="btn btn-warning" href="{{ route('vendors.edit', $vendor->id) }}">edit</a> --}}
+                            @if (auth()->user()->masterRole->name == 'superuser')
+                                <a href="#" class="btn btn-danger"
+                                    onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this procurement?')) { document.getElementById('delete-procurement-{{ $procurementHeader->id }}').submit(); }"><i
+                                        class="fa fa-trash" aria-hidden="true"></i></a>
+                            @endif
+
+
+                            <form id="delete-procurement-{{ $procurementHeader->id }}"
+                                action="{{ route('procurements.destroy', $procurementHeader->id) }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+
+                            <form id="approve-procurement-{{ $procurementHeader->id }}"
+                                action="{{ route('procurements.approve', $procurementHeader->id) }}" method="POST"
+                                style="display: none;">
+                                <input name="status" type="text" value="approved">
+                                @csrf
+                                @method('PUT')
+                            </form>
+
+                            <form id="reject-procurement-{{ $procurementHeader->id }}"
+                                action="{{ route('procurements.reject', $procurementHeader->id) }}" method="POST"
+                                style="display: none;">
+                                <input name="status" type="text" value="rejected">
+                                @csrf
+                                @method('PUT')
+                            </form>
                             <!-- procurement detail -->
                             <table id="datatablesSimple">
                                 <thead>
@@ -110,7 +127,8 @@
                                         <th>Kuantitas/Jumlah</th>
                                         <th>Harga</th>
                                         <th>Subtotal</th>
-                                        <th>Header ID</th>
+                                        <th>Departemen</th>
+
                                     </tr>
                                 </thead>
                                 <tfoot>
@@ -119,7 +137,8 @@
                                         <th>Kuantitas/Jumlah</th>
                                         <th>Harga</th>
                                         <th>Subtotal</th>
-                                        <th>Header ID</th>
+                                        <th>Departemen</th>
+
                                     </tr>
                                 </tfoot>
                                 <tbody>
@@ -129,9 +148,10 @@
                                             <td>{{ $detail->id }}</td>
                                             <td>{{ $detail->masterItem->name }}</td>
                                             <td>{{ $detail->quantity }}</td>
-                                            <td>{{ $detail->price }}</td>
-                                            <td>{{ $detail->subtotal }}</td>
-                                            <td>{{ $detail->header_id }}</td>
+                                            <td>{{ number_format($detail->price, 2, ',', '.') }}</td>
+                                            <td>{{ number_format($detail->subtotal, 2, ',', '.') }}</td>
+                                            <td>{{ $detail->masterDepartment->name }}</td>
+
                                         </tr>
                                     @endforeach
 
