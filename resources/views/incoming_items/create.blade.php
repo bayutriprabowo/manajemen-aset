@@ -32,9 +32,9 @@
                         <tbody>
                             <tr>
                                 <td><input type="date" id="transaction_date" required></td>
-                                <td><input type="text" id="code" readonly></td>
+                                <td><input type="text" id="code" readonly required></td>
                                 <td>
-                                    <select id="item_id" class="form-control item-id mb-3">
+                                    <select id="item_id" class="form-control item-id mb-3" required>
                                         <option value="">Pilih Item</option>
                                         @foreach ($masterItems as $item)
                                             <option value="{{ $item->id }}" data-nama="{{ $item->name }}">
@@ -44,7 +44,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select id="department_id" class="form-control item-id mb-3">
+                                    <select id="department_id" class="form-control item-id mb-3" required>
                                         <option value="">Pilih Departemen</option>
                                         @foreach ($masterDepartments as $department)
                                             <option value="{{ $department->id }}" data-nama="{{ $department->name }}">
@@ -54,7 +54,8 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input id="user_id" type="hidden" value="{{ auth()->user()->id }}" readonly>
+                                    <input id="user_id" type="hidden" value="{{ auth()->user()->id }}" readonly
+                                        required>
                                     {{ auth()->user()->name }}
                                 </td>
                                 <td><input type="text" id="quantity" required></td>
@@ -68,7 +69,7 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td><input type="text" id="description"></td>
+                                <td><input type="text" id="description" required></td>
                             </tr>
                             <tr>
                                 <td><button class="btn btn-success" id="addRow">Add Row</button></td>
@@ -117,20 +118,21 @@
             $('#transaction_date').on('change', function() {
                 var maxCodeNumber = 0;
 
+                // Reset the #code input field before generating a new one
+                $('#code').val('');
+
                 $('#datatable tbody tr').each(function() {
                     var code = $(this).find('input[name="code[]"]').val();
 
                     if (code) {
-                        var codeNumber = parseInt(code.split('-').pop());
+                        var codeNumber = parseInt(code.slice(-4));
                         if (codeNumber > maxCodeNumber) {
                             maxCodeNumber = codeNumber;
                         }
+                    } else if (maxCodeNumber == 0) {
+                        maxCodeNumber = parseInt($('#maxId').val());
                     }
                 });
-
-                if (maxCodeNumber === 0 && $('#maxId').val()) {
-                    maxCodeNumber = parseInt($('#maxId').val());
-                }
 
                 var newCodeNumber = (maxCodeNumber + 1).toString().padStart(4, '0');
                 var selectedDate = $('#transaction_date').val().replace(/-/g, '');
@@ -138,6 +140,7 @@
 
                 $('#code').val(newCode);
             });
+
 
             $('#addRow').click(function() {
                 var transactionDate = $('#transaction_date').val();
@@ -186,6 +189,8 @@
                         alert('Item ini sudah ditambahkan.');
                     }
 
+                    $('#transaction_date').val('');
+                    $('#code').val('');
                     $('#item_id').val('');
                     $('#department_id').val('');
                     $('#quantity').val('');
