@@ -14,4 +14,9 @@ class MasterItemStatus extends Model
     protected $fillable = [
         'description'
     ];
+
+    public function incomingItem()
+    {
+        return $this->hasMany(TransactionIncomingItem::class, 'status_id');
+    }
 }

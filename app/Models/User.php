@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -62,5 +63,10 @@ class User extends Authenticatable
     public function masterCompany(): BelongsTo
     {
         return $this->belongsTo(MasterCompany::class, 'company_id');
+    }
+
+    public function incomingItem(): HasMany
+    {
+        return $this->hasMany(TransactionIncomingItem::class, 'user_id');
     }
 }

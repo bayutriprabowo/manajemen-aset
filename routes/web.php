@@ -12,6 +12,7 @@ use App\Http\Controllers\MasterItemStatusController;
 use App\Http\Controllers\MasterSectionController;
 use App\Http\Controllers\MasterVendorController;
 use App\Http\Controllers\MasterVendorItemController;
+use App\Http\Controllers\TransactionIncomingItemController;
 use App\Http\Controllers\TransactionItemProcurementController;
 
 Route::get('/', function () {
@@ -117,7 +118,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/procurements', [TransactionItemProcurementController::class, 'index'])->name('procurements.index');
     Route::get('/procurements.create', [TransactionItemProcurementController::class, 'create'])->name('procurements.create');
     Route::post('/procurements.store', [TransactionItemProcurementController::class, 'store'])->name('procurements.store');
-    // Route::get('/procurement.edit/{id}', [TransactionItemProcurementController::class, 'edit'])->name('procurements.edit');
+    // Route::get('/procurements.edit/{id}', [TransactionItemProcurementController::class, 'edit'])->name('procurements.edit');
     // Route::put('procurements.update/{id}', [TransactionItemProcurementController::class, 'update'])->name('procurements.update');
     Route::delete('procurements/{id}', [TransactionItemProcurementController::class, 'destroy'])->name('procurements.destroy');
 
@@ -126,5 +127,16 @@ Route::middleware('auth')->group(function () {
     Route::put('procurements.approve/{id}', [TransactionItemProcurementController::class, 'approve'])->name('procurements.approve');
     Route::put('procurements.reject/{id}', [TransactionItemProcurementController::class, 'reject'])->name('procurements.reject');
 });
+
+// incoming item
+Route::middleware('auth')->group(function () {
+    Route::get('/incoming_items', [TransactionIncomingItemController::class, 'index'])->name('incoming_items.index');
+    Route::get('/incoming_items.create', [TransactionIncomingItemController::class, 'create'])->name('incoming_items.create');
+    Route::post('/incoming_items.store', [TransactionIncomingItemController::class, 'store'])->name('incoming_items.store');
+    // Route::get('/incoming_items.edit/{id}', [TransactionIncomingItemController::class, 'edit'])->name('incoming_items.edit');
+    // Route::put('incoming_items.update/{id}', [TransactionIncomingItemController::class, 'update'])->name('incoming_items.update');
+    Route::delete('incoming_items/{id}', [TransactionIncomingItemController::class, 'destroy'])->name('incoming_items.destroy');
+});
+
 
 require __DIR__ . '/auth.php';
