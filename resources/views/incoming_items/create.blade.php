@@ -72,7 +72,7 @@
                             </tr>
                             <tr>
                                 <td><button class="btn btn-success" id="addRow">Add Row</button></td>
-                                <td><input type="text" id="maxId" value="{{ $maxId }}" readonly></td>
+                                <input type="hidden" id="maxId" value="{{ $maxId }}" readonly>
                             </tr>
                         </tbody>
                     </table>
