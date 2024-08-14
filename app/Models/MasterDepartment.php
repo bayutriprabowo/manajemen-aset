@@ -36,4 +36,9 @@ class MasterDepartment extends Model
     {
         return $this->hasMany(TransactionItemProcurementDetail::class, 'department_id');
     }
+
+    public function inventory()
+    {
+        return $this->hasMany(TransactionInventory::class, 'department_id');
+    }
 }

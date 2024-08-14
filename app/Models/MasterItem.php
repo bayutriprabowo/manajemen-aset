@@ -33,6 +33,11 @@ class MasterItem extends Model
         return $this->hasMany(TransactionItemProcurementDetail::class, 'item_id');
     }
 
+    public function inventory()
+    {
+        return $this->hasMany(TransactionInventory::class, 'item_id');
+    }
+
     // public function masterCompany(): BelongsTo
     // {
     //     return $this->belongsTo(MasterCompany::class, 'company_id');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MasterDepartment;
 use App\Models\MasterItem;
+use App\Models\TransactionInventory;
 use App\Models\TransactionItemProcurementDetail;
 use App\Models\TransactionItemProcurementHeader;
 use App\Models\TransactionStock;
@@ -104,18 +105,45 @@ class TransactionItemProcurementController extends Controller
     public function destroy($id)
     {
         // Start a database transaction
-        // Start a database transaction
         DB::beginTransaction();
 
         try {
             // Find the procurement header and its related details
             $procurementHeader = TransactionItemProcurementHeader::findOrFail($id);
-            $procurementDetails = TransactionItemProcurementDetail::where('header_id', $id);
+            $procurementDetails = TransactionItemProcurementDetail::where('header_id', $id)->get();
 
-            // Delete details first
-            $procurementDetails->delete();
+            // Check if the procurement is approved
+            if ($procurementHeader->status == 'approved') {
+                // Find the related stock entry by code
+                $stock = TransactionStock::where('code', $procurementHeader->code);
+                if ($stock) {
+                    // Delete the stock entry
+                    $stock->delete();
+                }
 
-            // Delete the header
+                // Update inventory quantities before deleting procurement details
+                foreach ($procurementDetails as $detail) {
+                    // Find the corresponding inventory record
+                    $inventory = TransactionInventory::where('item_id', $detail->item_id)
+                        ->where('department_id', $detail->department_id)
+                        ->first();
+
+                    if ($inventory) {
+                        // Decrease the inventory quantity by the procurement quantity
+                        $inventory->quantity -= $detail->quantity;
+                        $inventory->save();
+                    } else {
+                        // If inventory record does not exist, roll back the transaction
+                        DB::rollBack();
+                        return redirect()->route('procurements.index')->with('error', 'Failed to update inventory');
+                    }
+                }
+            }
+
+            // Delete the procurement details
+            TransactionItemProcurementDetail::where('header_id', $id)->delete();
+
+            // Delete the procurement header
             $procurementHeader->delete();
 
             // Commit the transaction
@@ -142,17 +170,20 @@ class TransactionItemProcurementController extends Controller
     public function approve(Request $request, $id)
     {
         $procurementHeader = TransactionItemProcurementHeader::findOrFail($id);
-        $procurementHeader->status = $request->input('status');
-        $procurementHeader->save();
+
+
 
 
         $procurementDetails = TransactionItemProcurementDetail::where('header_id', $id)->get();
+
         foreach ($procurementDetails as $detail) {
             DB::beginTransaction();
 
             try {
-                $dataDetails = [];
+                $procurementHeader->status = $request->input('status');
+                $procurementHeader->save();
 
+                $dataDetails = [];
 
                 $dataDetails[] = [
                     'item_id' => $detail->item_id,
@@ -162,9 +193,23 @@ class TransactionItemProcurementController extends Controller
                     'transaction_date' => $procurementHeader->transaction_date,
                     'department_id' => $detail->department_id,
                 ];
-
-
                 TransactionStock::insert($dataDetails);
+
+                $inventory = TransactionInventory::where('item_id', $detail->item_id)->where('department_id', $detail->department_id)->first();
+
+                // mengecek apakah isi inventory ada
+                if ($inventory) {
+                    $inventory->quantity += $detail->quantity;
+                    $inventory->save();
+                } else {
+                    // jika inventory tidak ditemukan
+                    TransactionInventory::create([
+                        'item_id' => $detail->item_id,
+                        'department_id' => $detail->department_id,
+                        'quantity' => $detail->quantity,
+                    ]);
+                }
+
                 DB::commit();
                 // return redirect()->back()->with('success', 'Records inserted successfully!');
                 return redirect()->route('procurements.index')->with('succcess', 'Penambahan berhasil');
@@ -184,10 +229,49 @@ class TransactionItemProcurementController extends Controller
 
     public function reject(Request $request, $id)
     {
-        $sprocurementHeader = TransactionItemProcurementHeader::findOrFail($id);
-        $sprocurementHeader->status = $request->input('status');
-        $sprocurementHeader->save();
+        $procurementHeader = TransactionItemProcurementHeader::findOrFail($id);
 
-        return redirect()->route('procurements.index'); // Redirect ke halaman index atau sesuai kebutuhan Anda
+        DB::beginTransaction();
+        try {
+            // Update the status of the procurement header
+            $procurementHeader->status = $request->input('status');
+            $procurementHeader->save();
+
+            // Check if the status is 'rejected'
+            if ($procurementHeader->status == 'rejected') {
+                // Find the related stock entry by code
+                $stock = TransactionStock::where('code', $procurementHeader->code);
+                if ($stock) {
+                    // Delete the stock entry
+                    $stock->delete();
+                }
+
+                // Get the details of the procurement
+                $procurementDetails = TransactionItemProcurementDetail::where('header_id', $id)->get();
+                foreach ($procurementDetails as $detail) {
+                    // Find the corresponding inventory record
+                    $inventory = TransactionInventory::where('item_id', $detail->item_id)
+                        ->where('department_id', $detail->department_id)
+                        ->first();
+                    if ($inventory) {
+                        // Decrease the inventory quantity by the rejected procurement quantity
+                        $inventory->quantity -= $detail->quantity;
+                        $inventory->save();
+                    } else {
+                        // If inventory record does not exist, roll back the transaction
+                        DB::rollBack();
+                        return redirect()->route('procurements.index')->with('error', 'Failed to update inventory');
+                    }
+                }
+            }
+
+            // Commit the transaction
+            DB::commit();
+            return redirect()->route('procurements.index')->with('success', 'Procurement rejected successfully');
+        } catch (\Exception $e) {
+            // Rollback the transaction if something went wrong
+            DB::rollBack();
+            return redirect()->route('procurements.index')->with('error', 'Failed to reject procurement');
+        }
     }
 }
