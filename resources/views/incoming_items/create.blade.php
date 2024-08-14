@@ -69,7 +69,7 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td><input type="text" id="description" required></td>
+                                <td><input type="text" id="description"></td>
                             </tr>
                             <tr>
                                 <td><button class="btn btn-success" id="addRow">Add Row</button></td>
@@ -80,10 +80,9 @@
 
                     <form id="dataForm" action="{{ route('incoming_items.store') }}" method="POST">
                         @csrf
-                        <table id="datatable" class="display">
+                        <table id="datatable" class="display table">
                             <thead>
                                 <tr>
-                                    <th>Tanggal</th>
                                     <th>Kode</th>
                                     <th>Item</th>
                                     <th>Departemen</th>
@@ -91,6 +90,7 @@
                                     <th>Jumlah</th>
                                     <th>Status</th>
                                     <th>Keterangan</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -170,7 +170,7 @@
 
                     if (!isDuplicate) {
                         var row = `<tr>
-                                        <td><input type="date" name="transaction_date[]" value="${transactionDate}" readonly></td>
+                                        <input type="hidden" name="transaction_date[]" value="${transactionDate}" readonly>
                                         <td><input type="text" name="code[]" value="${code}" class="form-control" readonly></td>
                                         <td><input type="text" name="item_name[]" value="${itemName}" class="form-control" readonly></td>
                                         <td><input type="text" name="department_name[]" value="${departmentName}" class="form-control" readonly></td>
