@@ -116,23 +116,30 @@
     <script>
         $(document).ready(function() {
             $('#transaction_date').on('change', function() {
+
+                var maxId = $('#maxId').val();
                 var maxCodeNumber = 0;
 
                 // Reset the #code input field before generating a new one
                 $('#code').val('');
 
-                $('#datatable tbody tr').each(function() {
-                    var code = $(this).find('input[name="code[]"]').val();
+                // $('#datatable tbody tr').each(function() {
+                //         var code = $(this).find('input[name="code[]"]').val();
 
-                    if (code) {
-                        var codeNumber = parseInt(code.slice(-4));
-                        if (codeNumber > maxCodeNumber) {
-                            maxCodeNumber = codeNumber;
-                        }
-                    } else if (maxCodeNumber == 0) {
-                        maxCodeNumber = parseInt($('#maxId').val());
-                    }
-                });
+                //         if (code) {
+                //             var codeNumber = parseInt(code.slice(-4));
+                //             if (codeNumber > maxCodeNumber) {
+                //                 maxCodeNumber = codeNumber;
+                //             }
+                //         } else if (maxCodeNumber == 0) {
+                //             maxCodeNumber = maxId;
+                //         }
+                //     // );
+                // });
+
+                var rowCount = document.getElementById('datatable').tBodies[0].rows.length;
+
+                maxCodeNumber = parseInt(maxId) + parseInt(rowCount);
 
                 var newCodeNumber = (maxCodeNumber + 1).toString().padStart(4, '0');
                 var selectedDate = $('#transaction_date').val().replace(/-/g, '');
@@ -162,7 +169,8 @@
                         var existingItemId = $(this).find('input[name="item_id[]"]').val();
                         var existingDepartmentId = $(this).find('input[name="department_id[]"]')
                             .val();
-                        if (existingItemId === itemId && existingDepartmentId === departmentId) {
+                        if (existingItemId === itemId && existingDepartmentId ===
+                            departmentId) {
                             isDuplicate = true;
                             return false;
                         }
@@ -182,7 +190,7 @@
                                         <input type="hidden" name="item_id[]" value="${itemId}">
                                         <input type="hidden" name="department_id[]" value="${departmentId}">
                                         <input type="hidden" name="user_id[]" value="${userId}">
-                                        <input type="hidden" name="item_status_id[]" value="${statusId}">
+                                        <input type="hidden" name="status_id[]" value="${statusId}">
                                     </tr>`;
                         $('#datatable tbody').append(row);
                     } else {

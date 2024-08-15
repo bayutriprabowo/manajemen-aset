@@ -6,7 +6,10 @@ use App\Models\MasterDepartment;
 use App\Models\MasterItem;
 use App\Models\MasterItemStatus;
 use App\Models\TransactionIncomingItem;
+use App\Models\TransactionInventory;
+use App\Models\TransactionStock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TransactionIncomingItemController extends Controller
 {
@@ -21,7 +24,7 @@ class TransactionIncomingItemController extends Controller
     public function create()
     {
         $maxId = TransactionIncomingItem::max('id');
-        $newId = $maxId + 1;
+        // $newId = $maxId + 1;
         $masterItems = MasterItem::all();
         $masterDepartments = MasterDepartment::all();
         $masterItemStatuses = MasterItemStatus::all();
@@ -30,45 +33,67 @@ class TransactionIncomingItemController extends Controller
 
     public function store(Request $request)
     {
+
         DB::beginTransaction();
 
         try {
-            $dataHeader = [];
-            $dataDetails = [];
-
-            $dataHeader[] = [
-                'id' => $request->id_header,
-                'transaction_date' => $request->transaction_date,
-                'status' => $request->status,
-                'code' => $request->code,
-                'description' => $request->description,
-                'total' => $request->total,
-
-            ];
+            $data = [];
 
             for ($i = 0; $i < count($request->item_id); $i++) {
-                $dataDetails[] = [
+                $data[] = [
+                    'code' => $request->code[$i],
                     'item_id' => $request->item_id[$i],
-                    'quantity' => $request->quantity[$i],
-                    'price' => $request->price[$i],
-                    'subtotal' => $request->subtotal[$i],
-                    'header_id' => $request->header_id[$i],
                     'department_id' => $request->department_id[$i],
+                    'user_id' => $request->user_id[$i],
+                    'quantity' => $request->quantity[$i],
+                    'transaction_date' => $request->transaction_date[$i],
+                    'status_id' => $request->status_id[$i],
+                    'description' => $request->description[$i],
                 ];
             }
 
 
-            TransactionItemProcurementHeader::insert($dataHeader);
-            TransactionItemProcurementDetail::insert($dataDetails);
+            TransactionIncomingItem::insert($data);
+
+            $dataStock = [];
+            for ($i = 0; $i < count($request->item_id); $i++) {
+                $dataStock[] = [
+                    'item_id' => $request->item_id[$i],
+                    'code' => $request->code[$i],
+                    'in' => $request->quantity[$i],
+                    'out' => 0,
+                    'transaction_date' => $request->transaction_date[$i],
+                    'department_id' => $request->department_id[$i],
+                ];
+
+                $inventory = TransactionInventory::where('item_id', $request->item_id[$i])->where('department_id', $request->department_id[$i])->first();
+
+                // mengecek apakah isi inventory ada
+                if ($inventory) {
+                    $inventory->quantity += $request->quantity[$i];
+                    $inventory->save();
+                } else {
+                    // jika inventory tidak ditemukan
+                    TransactionInventory::create([
+                        'item_id' => $request->item_id[$i],
+                        'department_id' => $request->department_id[$i],
+                        'quantity' => $request->quantity[$i],
+                    ]);
+                }
+            }
+            TransactionStock::insert($dataStock);
+
+
+
             DB::commit();
             // return redirect()->back()->with('success', 'Records inserted successfully!');
-            return redirect()->route('procurements.index')->with('succcess', 'Penambahan berhasil');
+            return redirect()->route('incoming_items.index')->with('succcess', 'Penambahan berhasil');
         } catch (\Exception $e) {
             // Rollback the transaction if something went wrong
             DB::rollBack();
 
             // Redirect with error message
-            return redirect()->route('procurements.create')->with('error', 'Failed to add procurement');
+            return redirect()->route('incoming_items.create')->with('error', 'Failed to add procurement');
         }
     }
 
