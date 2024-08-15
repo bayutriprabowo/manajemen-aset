@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\MasterDepartment;
 use App\Models\MasterItem;
+use App\Models\MasterVendor;
 use App\Models\TransactionInventory;
 use App\Models\TransactionItemProcurementDetail;
 use App\Models\TransactionItemProcurementHeader;
@@ -17,7 +18,7 @@ class TransactionItemProcurementController extends Controller
 {
     public function index()
     {
-        $procurementHeaders = TransactionItemProcurementHeader::all();
+        $procurementHeaders = TransactionItemProcurementHeader::with(['masterVendor', 'user'])->get();
         return view('procurements.index', compact(['procurementHeaders']));
     }
 
@@ -29,7 +30,8 @@ class TransactionItemProcurementController extends Controller
         $newId = $maxId + 1;
         $masterItems = MasterItem::all();
         $masterDepartments = MasterDepartment::all();
-        return view('procurements.create', compact(['newId', 'masterItems', 'masterDepartments']));
+        $masterVendors = MasterVendor::all();
+        return view('procurements.create', compact(['newId', 'masterItems', 'masterDepartments', 'masterVendors']));
     }
 
     public function store(Request $request)
@@ -47,6 +49,8 @@ class TransactionItemProcurementController extends Controller
                 'code' => $request->code,
                 'description' => $request->description,
                 'total' => $request->total,
+                'vendor_id' => $request->vendor_id,
+                'user_id' => $request->user_id,
 
             ];
 
@@ -162,7 +166,7 @@ class TransactionItemProcurementController extends Controller
 
     public function detail($id)
     {
-        $procurementHeader = TransactionItemProcurementHeader::findOrFail($id);
+        $procurementHeader = TransactionItemProcurementHeader::with(['masterVendor', 'user'])->findOrFail($id);
         $procurementDetails = TransactionItemProcurementDetail::with(['masterItem', 'masterDepartment'])->where('header_id', $id)->get();
         return view('procurements.detail', compact(['procurementHeader', 'procurementDetails']));
     }

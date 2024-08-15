@@ -41,6 +41,8 @@
                                         <th scope="col">Kode</th>
                                         <th scope="col">Keterangan</th>
                                         <th scope="col">Total</th>
+                                        <th scope="col">Vendor</th>
+                                        <th scope="col">Pengusul</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,7 +62,8 @@
                                         <td>{{ $procurementHeader->code }}</td>
                                         <td>{{ $procurementHeader->description }}</td>
                                         <td>{{ number_format($procurementHeader->total, 2, ',', '.') }}</td>
-
+                                        <td>{{ $procurementHeader->masterVendor->name }}</td>
+                                        <td>{{ $procurementHeader->user->name }}</td>
                                         <td>
 
                                         </td>

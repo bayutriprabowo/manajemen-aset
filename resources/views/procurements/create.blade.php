@@ -28,6 +28,8 @@
                                     <th>Kode</th>
                                     <th>Keterangan</th>
                                     <th>Total</th>
+                                    <th>Vendor</th>
+                                    <th>Pengusul</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -40,6 +42,17 @@
                                     </td>
                                     <td><input type="text" name="description" required></td>
                                     <td><input type="text" name="total" id="total" value="0.00" readonly>
+                                    <td><select name="vendor_id" id="vendor_id" class="form-control item-id mb-3"
+                                            required>
+                                            <option value="">Pilih Vendor</option>
+                                            @foreach ($masterVendors as $vendor)
+                                                <option value="{{ $vendor->id }}" data-nama="{{ $vendor->name }}">
+                                                    {{ $vendor->name }}
+                                                </option>
+                                            @endforeach
+                                        </select></td>
+                                    <td><input type="text" name="user_id" id="user_id"
+                                            value="{{ auth()->user()->id }}" readonly></td>
                                     </td>
                                 </tr>
 

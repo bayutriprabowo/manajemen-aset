@@ -23,4 +23,9 @@ class MasterVendor extends Model
     {
         return $this->hasMany(MasterVendorItem::class, 'vendor_id');
     }
+
+    public function procurementHeader()
+    {
+        return $this->hasMany(TransactionItemProcurementHeader::class, 'vendor_id');
+    }
 }

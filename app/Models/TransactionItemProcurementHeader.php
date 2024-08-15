@@ -18,10 +18,22 @@ class TransactionItemProcurementHeader extends Model
         'code',
         'description',
         'total',
+        'vendor_id',
+        'user_id',
     ];
 
     public function procurementDetail()
     {
         return $this->hasMany(TransactionItemProcurementDetail::class, 'header_id');
+    }
+
+    public function masterVendor()
+    {
+        return $this->belongsTo(MasterVendor::class, 'vendor_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

@@ -40,6 +40,8 @@
                                         <th>Kode</th>
                                         <th>Keterangan</th>
                                         <th>Total</th>
+                                        <th>Vendor</th>
+                                        <th>Pengusul</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -51,6 +53,8 @@
                                         <th>Kode</th>
                                         <th>Keterangan</th>
                                         <th>Total</th>
+                                        <th>Vendor</th>
+                                        <th>Pengusul</th>
                                         <th>Action</th>
                                     </tr>
                                 </tfoot>
@@ -73,7 +77,8 @@
                                             <td>{{ $header->code }}</td>
                                             <td>{{ $header->description }}</td>
                                             <td>{{ number_format($header->total, 2, ',', '.') }}</td>
-
+                                            <td>{{ $header->masterVendor->name }}</td>
+                                            <td>{{ $header->user->name }}</td>
 
                                             <td>
                                                 @if (auth()->user()->masterRole->name == 'superuser')

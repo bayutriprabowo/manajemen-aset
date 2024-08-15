@@ -69,4 +69,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(TransactionIncomingItem::class, 'user_id');
     }
+
+    public function procurementHeader()
+    {
+        return $this->hasMany(TransactionItemProcurementHeader::class, 'user_id');
+    }
 }
