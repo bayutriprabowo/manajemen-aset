@@ -13,7 +13,7 @@
             <main>
                 <div class="container-fluid px-4">
                     <!-- isi table -->
-                    <h1>Form Input Barang Masuk</h1>
+                    <h1>Form Input Barang Keluar</h1>
                     {{-- <button id="addRow" class="btn btn-success">Add Row</button> --}}
 
                     <table class="table">
@@ -27,6 +27,7 @@
                                 <th>Jumlah</th>
                                 <th>Status_Barang</th>
                                 <th>Keterangan</th>
+                                <th>Tujuan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,15 +71,16 @@
                                     </select>
                                 </td>
                                 <td><input type="text" id="description"></td>
+                                <td><input type="text" id="purpose"></td>
                             </tr>
                             <tr>
                                 <td><button class="btn btn-success" id="addRow">Add Row</button></td>
-                                <input type="hidden" id="maxId" value="{{ $maxId }}" readonly>
+                                <td><input type="hidden" id="maxId" value="{{ $maxId }}" readonly></td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <form id="dataForm" action="{{ route('incoming_items.store') }}" method="POST">
+                    <form id="dataForm" action="{{ route('outgoing_items.store') }}" method="POST">
                         @csrf
                         <table id="datatable" class="display table">
                             <thead>
@@ -90,6 +92,7 @@
                                     <th>Jumlah</th>
                                     <th>Status</th>
                                     <th>Keterangan</th>
+                                    <th>Tujuan</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -154,6 +157,7 @@
                 var statusId = $('#status_id').val();
                 var statusName = $('#status_id').find(':selected').data('nama');
                 var description = $('#description').val();
+                var purpose = $('#purpose').val();
 
                 if (itemId && itemName && departmentId && departmentName) {
                     var isDuplicate = false;
@@ -178,6 +182,7 @@
                                         <td><input type="text" name="quantity[]" value="${quantity}" class="form-control quantity" readonly></td>
                                         <td><input type="text" name="item_status_name[]" value="${statusName}" class="form-control" readonly></td>
                                         <td><input type="text" name="description[]" value="${description}" class="form-control" readonly></td>
+                                        <td><input type="text" name="purpose[]" value="${purpose}" class="form-control" readonly></td>
                                         <td><button type="button" class="btn btn-danger delete-row">Delete</button></td>
                                         <input type="hidden" name="item_id[]" value="${itemId}">
                                         <input type="hidden" name="department_id[]" value="${departmentId}">

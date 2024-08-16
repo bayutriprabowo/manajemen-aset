@@ -65,13 +65,20 @@ class User extends Authenticatable
         return $this->belongsTo(MasterCompany::class, 'company_id');
     }
 
+
+
+    public function procurementHeader()
+    {
+        return $this->hasMany(TransactionItemProcurementHeader::class, 'user_id');
+    }
+
     public function incomingItem(): HasMany
     {
         return $this->hasMany(TransactionIncomingItem::class, 'user_id');
     }
 
-    public function procurementHeader()
+    public function outgoingItem()
     {
-        return $this->hasMany(TransactionItemProcurementHeader::class, 'user_id');
+        return $this->hasMany(TransactionOutgoingItem::class, 'user_id');
     }
 }

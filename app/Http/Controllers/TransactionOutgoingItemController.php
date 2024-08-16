@@ -5,30 +5,28 @@ namespace App\Http\Controllers;
 use App\Models\MasterDepartment;
 use App\Models\MasterItem;
 use App\Models\MasterItemStatus;
-use App\Models\TransactionIncomingItem;
 use App\Models\TransactionInventory;
+use App\Models\TransactionOutgoingItem;
 use App\Models\TransactionStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class TransactionIncomingItemController extends Controller
+class TransactionOutgoingItemController extends Controller
 {
     public function index()
     {
-        $incomingItems = TransactionIncomingItem::with(['user', 'masterItem', 'masterDepartment', 'masterItemStatus'])->get();
-        return view('incoming_items.index', compact(['incomingItems']));
+        $outgoingItems = TransactionOutgoingItem::with(['user', 'masterItem', 'masterDepartment', 'masterItemStatus'])->get();
+        return view('outgoing_items.index', compact(['outgoingItems']));
     }
-
-
 
     public function create()
     {
-        $maxId = TransactionIncomingItem::max('id');
+        $maxId = TransactionOutgoingItem::max('id');
         // $newId = $maxId + 1;
         $masterItems = MasterItem::all();
         $masterDepartments = MasterDepartment::all();
         $masterItemStatuses = MasterItemStatus::all();
-        return view('incoming_items.create', compact(['maxId', 'masterItems', 'masterDepartments', 'masterItemStatuses']));
+        return view('outgoing_items.create', compact(['maxId', 'masterItems', 'masterDepartments', 'masterItemStatuses']));
     }
 
     public function store(Request $request)
@@ -49,19 +47,20 @@ class TransactionIncomingItemController extends Controller
                     'transaction_date' => $request->transaction_date[$i],
                     'status_id' => $request->status_id[$i],
                     'description' => $request->description[$i],
+                    'purpose' => $request->purpose[$i],
                 ];
             }
 
 
-            TransactionIncomingItem::insert($data);
+            TransactionOutgoingItem::insert($data);
 
             $dataStock = [];
             for ($i = 0; $i < count($request->item_id); $i++) {
                 $dataStock[] = [
                     'item_id' => $request->item_id[$i],
                     'code' => $request->code[$i],
-                    'in' => $request->quantity[$i],
-                    'out' => 0,
+                    'in' => 0,
+                    'out' => $request->quantity[$i],
                     'transaction_date' => $request->transaction_date[$i],
                     'department_id' => $request->department_id[$i],
                 ];
@@ -69,16 +68,13 @@ class TransactionIncomingItemController extends Controller
                 $inventory = TransactionInventory::where('item_id', $request->item_id[$i])->where('department_id', $request->department_id[$i])->first();
 
                 // mengecek apakah isi inventory ada
-                if ($inventory) {
-                    $inventory->quantity += $request->quantity[$i];
+                if ($inventory && $inventory->quantity >= $request->quantity[$i]) {
+                    $inventory->quantity -= $request->quantity[$i];
                     $inventory->save();
                 } else {
-                    // jika inventory tidak ditemukan
-                    TransactionInventory::create([
-                        'item_id' => $request->item_id[$i],
-                        'department_id' => $request->department_id[$i],
-                        'quantity' => $request->quantity[$i],
-                    ]);
+                    // jika inventory tidak kurang
+                    DB::rollBack();
+                    return redirect()->route('outgoing_items.create')->with('error', 'Failed to add outgoing');
                 }
             }
             TransactionStock::insert($dataStock);
@@ -87,13 +83,13 @@ class TransactionIncomingItemController extends Controller
 
             DB::commit();
             // return redirect()->back()->with('success', 'Records inserted successfully!');
-            return redirect()->route('incoming_items.index')->with('succcess', 'Penambahan berhasil');
+            return redirect()->route('outgoing_items.index')->with('succcess', 'Penambahan berhasil');
         } catch (\Exception $e) {
             // Rollback the transaction if something went wrong
             DB::rollBack();
 
             // Redirect with error message
-            return redirect()->route('incoming_items.create')->with('error', 'Failed to add procurement');
+            return redirect()->route('outgoing_items.create')->with('error', 'Failed to add outgoing');
         }
     }
 
@@ -104,12 +100,12 @@ class TransactionIncomingItemController extends Controller
 
         try {
             // Find the procurement header and its related details
-            $incomingItem = TransactionIncomingItem::where('id', $id)->first();
+            $outgoingItem = TransactionOutgoingItem::where('id', $id)->first();
 
             // Check if the procurement is approved
-            if ($incomingItem) {
+            if ($outgoingItem) {
                 // Find the related stock entry by code
-                $stock = TransactionStock::where('code', $incomingItem->code);
+                $stock = TransactionStock::where('code', $outgoingItem->code);
                 if ($stock) {
                     // Delete the stock entry
                     $stock->delete();
@@ -119,13 +115,13 @@ class TransactionIncomingItemController extends Controller
 
                 // Update inventory quantities before deleting procurement details
                 // Find the corresponding inventory record
-                $inventory = TransactionInventory::where('item_id', $incomingItem->item_id)
-                    ->where('department_id', $incomingItem->department_id)
+                $inventory = TransactionInventory::where('item_id', $outgoingItem->item_id)
+                    ->where('department_id', $outgoingItem->department_id)
                     ->first();
 
                 if ($inventory) {
                     // Decrease the inventory quantity by the procurement quantity
-                    $inventory->quantity -= $incomingItem->quantity;
+                    $inventory->quantity += $outgoingItem->quantity;
                     $inventory->save();
                 } else {
                     DB::rollBack();
@@ -133,19 +129,19 @@ class TransactionIncomingItemController extends Controller
             }
 
             // Delete the incoming item
-            $incomingItem->delete();
+            $outgoingItem->delete();
 
             // Commit the transaction
             DB::commit();
 
             // Redirect with success message
-            return redirect()->route('incoming_items.index')->with('success', 'Procurement deleted successfully');
+            return redirect()->route('outgoing_items.index')->with('success', 'Procurement deleted successfully');
         } catch (\Exception $e) {
             // Rollback the transaction if something went wrong
             DB::rollBack();
 
             // Redirect with error message
-            return redirect()->route('incoming_items.index')->with('error', 'Failed to delete procurement');
+            return redirect()->route('outgoing_items.index')->with('error', 'Failed to undo');
         }
     }
 }

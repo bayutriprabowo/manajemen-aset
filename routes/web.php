@@ -14,6 +14,7 @@ use App\Http\Controllers\MasterVendorController;
 use App\Http\Controllers\MasterVendorItemController;
 use App\Http\Controllers\TransactionIncomingItemController;
 use App\Http\Controllers\TransactionItemProcurementController;
+use App\Http\Controllers\TransactionOutgoingItemController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -136,6 +137,16 @@ Route::middleware('auth')->group(function () {
     // Route::get('/incoming_items.edit/{id}', [TransactionIncomingItemController::class, 'edit'])->name('incoming_items.edit');
     // Route::put('incoming_items.update/{id}', [TransactionIncomingItemController::class, 'update'])->name('incoming_items.update');
     Route::delete('incoming_items/{id}', [TransactionIncomingItemController::class, 'destroy'])->name('incoming_items.destroy');
+});
+
+// outgoing item
+Route::middleware('auth')->group(function () {
+    Route::get('/outgoing_items', [TransactionOutgoingItemController::class, 'index'])->name('outgoing_items.index');
+    Route::get('/outgoing_items.create', [TransactionOutgoingItemController::class, 'create'])->name('outgoing_items.create');
+    Route::post('/outgoing_items.store', [TransactionOutgoingItemController::class, 'store'])->name('outgoing_items.store');
+    // Route::get('/outgoing_items.edit/{id}', [TransactionOutgoingItemController::class, 'edit'])->name('outgoing_items.edit');
+    // Route::put('outgoing_items.update/{id}', [TransactionOutgoingItemController::class, 'update'])->name('outgoing_items.update');
+    Route::delete('outgoing_items/{id}', [TransactionOutgoingItemController::class, 'destroy'])->name('outgoing_items.destroy');
 });
 
 

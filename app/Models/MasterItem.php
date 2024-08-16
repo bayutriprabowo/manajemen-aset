@@ -38,8 +38,14 @@ class MasterItem extends Model
         return $this->hasMany(TransactionInventory::class, 'item_id');
     }
 
-    public function incomingItem() {
+    public function incomingItem()
+    {
         return $this->hasMany(TransactionIncomingItem::class, 'item_id');
+    }
+
+    public function outgoingItem()
+    {
+        return $this->hasMany(TransactionOutgoingItem::class, 'item_id');
     }
 
     // public function masterCompany(): BelongsTo
