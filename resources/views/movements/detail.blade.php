@@ -18,7 +18,7 @@
                         <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Transaction Movement Tables</li>
                     </ol>
-                    <a class="btn btn-success" href="{{ route('procurements.create') }}">Tambah Mutasi Barang</a>
+                    <a class="btn btn-success" href="{{ route('movements.create') }}">Tambah Mutasi Barang</a>
                     <div class="card mb-4">
                         <div class="card-body">
                             Data ini merupakan mutasi barang, apabila ada
