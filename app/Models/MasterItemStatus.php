@@ -24,4 +24,9 @@ class MasterItemStatus extends Model
     {
         return $this->hasMany(TransactionOutgoingItem::class, 'status_id');
     }
+
+    public function ItemMovementHeader()
+    {
+        return $this->hasMany(TransactionItemMovementHeader::class, 'status_id');
+    }
 }

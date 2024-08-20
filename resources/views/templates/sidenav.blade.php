@@ -56,7 +56,7 @@
                         <a class="nav-link" href="{{ route('procurements.index') }}">Pengadaan</a>
                         <a class="nav-link" href="{{ route('incoming_items.index') }}">Barang Masuk</a>
                         <a class="nav-link" href="{{ route('outgoing_items.index') }}">Barang Keluar</a>
-                        <a class="nav-link" href="layout-static.html">Transaction 1</a>
+                        <a class="nav-link" href="{{ route('movements.index') }}">Mutasi Barang</a>
                         <a class="nav-link" href="layout-sidenav-light.html">Transaction 2</a>
                     </nav>
                 </div>

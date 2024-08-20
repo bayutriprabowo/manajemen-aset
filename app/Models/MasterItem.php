@@ -48,6 +48,11 @@ class MasterItem extends Model
         return $this->hasMany(TransactionOutgoingItem::class, 'item_id');
     }
 
+    public function itemMovementDetail()
+    {
+        return $this->hasMany(TransactionItemMovementDetail::class, 'item_id');
+    }
+
     // public function masterCompany(): BelongsTo
     // {
     //     return $this->belongsTo(MasterCompany::class, 'company_id');

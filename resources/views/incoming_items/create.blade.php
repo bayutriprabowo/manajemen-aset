@@ -135,7 +135,7 @@
 
                 var newCodeNumber = (maxCodeNumber + 1).toString().padStart(4, '0');
                 var selectedDate = $('#transaction_date').val().replace(/-/g, '');
-                var newCode = `OUT-${selectedDate}${newCodeNumber}`;
+                var newCode = `INC-${selectedDate}${newCodeNumber}`;
 
                 $('#code').val(newCode);
             });

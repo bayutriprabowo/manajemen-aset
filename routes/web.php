@@ -13,6 +13,7 @@ use App\Http\Controllers\MasterSectionController;
 use App\Http\Controllers\MasterVendorController;
 use App\Http\Controllers\MasterVendorItemController;
 use App\Http\Controllers\TransactionIncomingItemController;
+use App\Http\Controllers\TransactionItemMovementController;
 use App\Http\Controllers\TransactionItemProcurementController;
 use App\Http\Controllers\TransactionOutgoingItemController;
 
@@ -147,6 +148,21 @@ Route::middleware('auth')->group(function () {
     // Route::get('/outgoing_items.edit/{id}', [TransactionOutgoingItemController::class, 'edit'])->name('outgoing_items.edit');
     // Route::put('outgoing_items.update/{id}', [TransactionOutgoingItemController::class, 'update'])->name('outgoing_items.update');
     Route::delete('outgoing_items/{id}', [TransactionOutgoingItemController::class, 'destroy'])->name('outgoing_items.destroy');
+});
+
+// movement
+Route::middleware('auth')->group(function () {
+    Route::get('/movements', [TransactionItemMovementController::class, 'index'])->name('movements.index');
+    Route::get('/movements.create', [TransactionItemMovementController::class, 'create'])->name('movements.create');
+    Route::post('/movements.store', [TransactionItemMovementController::class, 'store'])->name('movements.store');
+    // Route::get('/movements.edit/{id}', [TransactionItemMovementController::class, 'edit'])->name('movements.edit');
+    // Route::put('movements.update/{id}', [TransactionItemMovementController::class, 'update'])->name('movements.update');
+    Route::delete('movements/{id}', [TransactionItemMovementController::class, 'destroy'])->name('movements.destroy');
+
+    // procurement detail untuk approvement
+    Route::get('/movements.detail/{id}', [TransactionItemMovementController::class, 'detail'])->name('movements.detail');
+    Route::put('movements.approve/{id}', [TransactionItemMovementController::class, 'approve'])->name('movements.approve');
+    Route::put('movements.reject/{id}', [TransactionItemMovementController::class, 'reject'])->name('movements.reject');
 });
 
 

@@ -81,4 +81,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(TransactionOutgoingItem::class, 'user_id');
     }
+
+    public function itemMovementHeader()
+    {
+        return $this->hasMany(TransactionItemMovementHeader::class, 'user_id');
+    }
 }
