@@ -136,6 +136,7 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
+                                        <th>ID</th>
                                         <th>Nama Item</th>
                                         <th>Kuantitas/Jumlah</th>
                                         <th>Harga</th>

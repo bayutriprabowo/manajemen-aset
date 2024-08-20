@@ -38,11 +38,11 @@
                                         <th>Tanggal</th>
                                         <th>Status</th>
                                         <th>Kode</th>
-                                        <th>User</th>
+                                        <th>Pengusul</th>
                                         <th>Dari</th>
                                         <th>Ke</th>
                                         <th>Tujuan</th>
-                                        <th>Kondisi</th>
+                                        <th>Status Barang</th>
                                         <th>Keterangan</th>
                                         <th>Action</th>
                                     </tr>
@@ -53,11 +53,11 @@
                                         <th>Tanggal</th>
                                         <th>Status</th>
                                         <th>Kode</th>
-                                        <th>User</th>
+                                        <th>Pengusul</th>
                                         <th>Dari</th>
                                         <th>Ke</th>
                                         <th>Tujuan</th>
-                                        <th>Kondisi</th>
+                                        <th>Status Barang</th>
                                         <th>Keterangan</th>
                                         <th>Action</th>
                                     </tr>
@@ -78,19 +78,8 @@
                                                     <button class="btn btn-primary btn-sm">Proses</button>
                                                 @endif
                                             </td>
-                                            <th>ID</th>
-                                            <th>Tanggal</th>
-                                            <th>Status</th>
-                                            <th>Kode</th>
-                                            <th>User</th>
-                                            <th>Dari</th>
-                                            <th>Ke</th>
-                                            <th>Tujuan</th>
-                                            <th>Kondisi</th>
-                                            <th>Keterangan</th>
-                                            <th>Action</th>
                                             <td>{{ $header->code }}</td>
-                                            <td>{{ $header->user }}</td>
+                                            <td>{{ $header->user->name }}</td>
                                             <td>{{ $header->masterDepartmentFrom->name }}</td>
                                             <td>{{ $header->masterDepartmentTo->name }}</td>
                                             <td>{{ $header->purpose }}</td>

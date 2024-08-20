@@ -180,7 +180,7 @@
                     $('#datatable tbody tr').each(function() {
                         var existingItemId = $(this).find('input[name="item_id[]"]').val();
                         var existingDepartmentId = $(this).find(
-                            'input[name="department_id_from[]"]').val();
+                            'input[name="department_id[]"]').val();
                         if (existingItemId === itemId && existingDepartmentId === departmentId) {
                             isDuplicate = true;
                             return false;
@@ -198,8 +198,8 @@
                                         <td><input type="text" name="item_name[]" value="${itemName}" class="form-control" readonly required></td>
                                         <td><input type="text" name="stock[]" value="${stockValue}" class="form-control quantity" readonly required></td>
                                         <td><input type="number" name="quantity[]" value="" class="form-control quantity" required></td>
-                                        <td><input type="text" name="header_id[]" value="${headerId}" readonly></td>
-                                        <td><input type="hidden" name="department_id_from[]" value="${departmentId}"></td>
+                                        <input type="hidden" name="header_id[]" value="${headerId}" readonly>
+                                        <input type="hidden" name="department_id[]" value="${departmentId}">
                                         <td><button type="button" class="btn btn-danger delete-row">Delete</button></td>
                                         <input type="hidden" name="item_id[]" value="${itemId}">
                                     </tr>`;
