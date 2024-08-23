@@ -169,7 +169,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/stocks', [TransactionStockController::class, 'index'])->name('stocks.index');
     Route::get('/stocks.filter', [TransactionStockController::class, 'filter'])->name('stocks.filter');
-    Route::get('/stocks.printPdf', [TransactionStockController::class, 'printPdf'])->name('stocks.printPdf');
+    Route::get('/stocks.generate_pdf', [TransactionStockController::class, 'generatePDF'])->name('stocks.generatePDF');
+
     // Route::get('/stocks.create', [TransactionStockController::class, 'create'])->name('stocks.create');
     // Route::post('/stocks.store', [TransactionStockController::class, 'store'])->name('stocks.store');
     // // Route::get('/stocks.edit/{id}', [TransactionStockController::class, 'edit'])->name('stocks.edit');

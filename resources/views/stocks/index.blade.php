@@ -42,11 +42,12 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form action="{{ route('stocks.printPdf') }}">
+                                <form action="{{ route('stocks.generatePDF') }}">
                                     <div class="modal-body">
                                         <h2>Kartu Stok</h2>
                                         <label for="item_id_stock">Nama Item</label>
-                                        <select name="item_id_stock" id="item_id_stock" class="form-control item-id">
+                                        <select name="item_id_stock" id="item_id_stock" class="form-control item-id"
+                                            required>
                                             <option value="">Pilih Item</option>
                                             @foreach ($masterItems as $item)
                                                 <option value="{{ $item->id }}" data-nama="{{ $item->name }}">
@@ -56,7 +57,7 @@
                                         </select>
                                         <label for="department_id_stock">Nama Departemen</label>
                                         <select name="department_id_stock" id="department_id_stock"
-                                            class="form-control item-id">
+                                            class="form-control item-id" required>
                                             <option value="">Pilih Departemen</option>
                                             @foreach ($masterDepartments as $department)
                                                 <option value="{{ $department->id }}"
@@ -66,9 +67,9 @@
                                             @endforeach
                                         </select>
                                         <label for="start_date" class="form-control">Tanggal Awal</label>
-                                        <input type="date" id="start_date" name="start_date" value="">
+                                        <input type="date" id="start_date" name="start_date" value="" required>
                                         <label for="end_date" class="form-control">Tanggal AKhir</label>
-                                        <input type="date" id="end_date" name="end_date" value="">
+                                        <input type="date" id="end_date" name="end_date" value="" required>
 
 
 
