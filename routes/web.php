@@ -16,6 +16,7 @@ use App\Http\Controllers\TransactionIncomingItemController;
 use App\Http\Controllers\TransactionItemMovementController;
 use App\Http\Controllers\TransactionItemProcurementController;
 use App\Http\Controllers\TransactionOutgoingItemController;
+use App\Http\Controllers\TransactionStockController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -163,6 +164,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/movements.detail/{id}', [TransactionItemMovementController::class, 'detail'])->name('movements.detail');
     Route::put('movements.approve/{id}', [TransactionItemMovementController::class, 'approve'])->name('movements.approve');
     Route::put('movements.reject/{id}', [TransactionItemMovementController::class, 'reject'])->name('movements.reject');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/stocks', [TransactionStockController::class, 'index'])->name('stocks.index');
+    Route::get('/stocks.filter', [TransactionStockController::class, 'filter'])->name('stocks.filter');
+    Route::get('/stocks.printPdf', [TransactionStockController::class, 'printPdf'])->name('stocks.printPdf');
+    // Route::get('/stocks.create', [TransactionStockController::class, 'create'])->name('stocks.create');
+    // Route::post('/stocks.store', [TransactionStockController::class, 'store'])->name('stocks.store');
+    // // Route::get('/stocks.edit/{id}', [TransactionStockController::class, 'edit'])->name('stocks.edit');
+    // // Route::put('stocks.update/{id}', [TransactionStockController::class, 'update'])->name('stocks.update');
+    // Route::delete('stocks/{id}', [TransactionStockController::class, 'destroy'])->name('stocks.destroy');
+
+    // // procurement detail untuk approvement
+    // Route::get('/stocks.detail/{id}', [TransactionStockController::class, 'detail'])->name('stocks.detail');
+    // Route::put('stocks.approve/{id}', [TransactionStockController::class, 'approve'])->name('stocks.approve');
+    // Route::put('stocks.reject/{id}', [TransactionStockController::class, 'reject'])->name('stocks.reject');
 });
 
 

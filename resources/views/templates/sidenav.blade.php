@@ -57,7 +57,7 @@
                         <a class="nav-link" href="{{ route('incoming_items.index') }}">Barang Masuk</a>
                         <a class="nav-link" href="{{ route('outgoing_items.index') }}">Barang Keluar</a>
                         <a class="nav-link" href="{{ route('movements.index') }}">Mutasi Barang</a>
-                        <a class="nav-link" href="layout-sidenav-light.html">Transaction 2</a>
+                        <a class="nav-link" href="{{ route('stocks.index') }}">Stok Barang</a>
                     </nav>
                 </div>
 
