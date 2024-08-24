@@ -114,6 +114,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Barcode</th>
                                         <th>Nama Item</th>
                                         <th>Departemen</th>
                                         <th>Jumlah</th>
@@ -122,6 +123,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Barcode</th>
                                         <th>Nama Item</th>
                                         <th>Departemen</th>
                                         <th>Jumlah</th>
@@ -131,6 +133,7 @@
                                     @foreach ($inventories as $inventory)
                                         <tr>
                                             <td>{{ $inventory->id }}</td>
+                                            <td>{{ $inventory->masterItem->barcode }}</td>
                                             <td>{{ $inventory->masterItem->name }}</td>
                                             <td>{{ $inventory->masterDepartment->name }}</td>
                                             <td>{{ $inventory->quantity }}</td>

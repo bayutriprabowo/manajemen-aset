@@ -13,6 +13,7 @@ class MasterItem extends Model
     protected $table = 'master_items';
 
     protected $fillable = [
+        'barcode',
         'name',
         'price',
         'type_id',

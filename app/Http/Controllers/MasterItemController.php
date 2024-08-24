@@ -27,6 +27,7 @@ class MasterItemController extends Controller
 
         for ($i = 0; $i < count($request->name); $i++) {
             $data[] = [
+                'barcode' => $request->barcode[$i],
                 'name' => $request->name[$i],
                 'price' => $request->price[$i],
                 'type_id' => $request->type_id[$i],
@@ -52,6 +53,7 @@ class MasterItemController extends Controller
     public function update(Request $request, $id)
     {
         $item = MasterItem::findOrFail($id);
+        $item->barcode = $request->input('barcode');
         $item->name = $request->input('name');
         $item->price = $request->input('price');
         $item->type_id = $request->input('type_id');

@@ -38,6 +38,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Barcode</th>
                                         <th>Nama Item</th>
                                         <th>Nama vendor</th>
                                     </tr>
@@ -45,6 +46,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Barcode</th>
                                         <th>Nama Item</th>
                                         <th>Nama vendor</th>
                                     </tr>
@@ -54,6 +56,7 @@
                                     @foreach ($vendorItems as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
+                                            <td>{{ $item->masterItem->barcode }}</td>
                                             <td>{{ $item->masterItem->name }}</td>
                                             <td>{{ $vendor->name }}</td>
                                             <td>

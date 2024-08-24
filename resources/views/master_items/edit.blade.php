@@ -18,7 +18,9 @@
                         @method('PUT')
 
                         <div class="form-group">
-
+                            <label for="barcode">Barcode</label>
+                            <input type="text" class="form-control" id="barcode" name="barcode"
+                                value="{{ $item->barcode }}">
                             <label for="name">Nama:</label>
                             <input type="text" class="form-control" id="name" name="name"
                                 value="{{ $item->name }}">

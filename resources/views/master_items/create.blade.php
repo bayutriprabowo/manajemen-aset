@@ -21,6 +21,7 @@
                         <table id="datatable" class="display">
                             <thead>
                                 <tr>
+                                    <th>Barcode</th>
                                     <th>Name</th>
                                     <th>Harga</th>
                                     <th>Tipe Item/Barang</th>
@@ -76,6 +77,7 @@
 
                 var newRow = document.createElement('tr');
                 newRow.innerHTML = `
+                    <td><input type="text" name="barcode[]" class="form-control"></td>
                     <td><input type="text" name="name[]" class="form-control" required></td>
                     <td><input type="text" name="price[]" class="form-control" required></td>
                     

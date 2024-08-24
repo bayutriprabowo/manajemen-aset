@@ -126,6 +126,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Barcode</th>
                                         <th>Nama Item</th>
                                         <th>Kuantitas/Jumlah</th>
                                         <th>Harga</th>
@@ -137,6 +138,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Barcode</th>
                                         <th>Nama Item</th>
                                         <th>Kuantitas/Jumlah</th>
                                         <th>Harga</th>
@@ -150,6 +152,7 @@
                                     @foreach ($procurementDetails as $detail)
                                         <tr>
                                             <td>{{ $detail->id }}</td>
+                                            <td>{{ $detail->masterItem->barcode }}</td>
                                             <td>{{ $detail->masterItem->name }}</td>
                                             <td>{{ $detail->quantity }}</td>
                                             <td>{{ number_format($detail->price, 2, ',', '.') }}</td>

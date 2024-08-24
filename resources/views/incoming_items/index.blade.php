@@ -36,6 +36,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Code</th>
+                                        <th>Barcode</th>
                                         <th>Item</th>
                                         <th>Departemen</th>
                                         <th>User</th>
@@ -50,6 +51,7 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Code</th>
+                                        <th>Barcode</th>
                                         <th>Item</th>
                                         <th>Departemen</th>
                                         <th>User</th>
@@ -66,6 +68,7 @@
                                         <tr>
                                             <td>{{ $incoming->id }}</td>
                                             <td>{{ $incoming->code }}</td>
+                                            <td>{{ $incoming->masterItem->barcode }}</td>
                                             <td>{{ $incoming->masterItem->name }}</td>
                                             <td>{{ $incoming->masterDepartment->name }}</td>
                                             <td>{{ $incoming->user->name }}</td>

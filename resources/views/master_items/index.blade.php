@@ -36,6 +36,7 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Barcode</th>
                                         <th>Nama</th>
                                         <th>Harga</th>
                                         <th>Tipe Item</th>
@@ -45,6 +46,7 @@
                                 <tfoot>
                                     <tr>
                                         <th>ID</th>
+                                        <th>Barcode</th>
                                         <th>Nama</th>
                                         <th>Harga</th>
                                         <th>Tipe Item</th>
@@ -56,6 +58,7 @@
                                     @foreach ($items as $item)
                                         <tr>
                                             <td>{{ $item->id }}</td>
+                                            <td>{{ $item->barcode }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->price }}</td>
                                             <td>{{ $item->masterItemType->name }}</td>

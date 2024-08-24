@@ -68,7 +68,7 @@ class TransactionItemProcurementController extends Controller
 
             TransactionItemProcurementHeader::insert($dataHeader);
             TransactionItemProcurementDetail::insert($dataDetails);
-            DB::commit();
+            // DB::commit();
             // return redirect()->back()->with('success', 'Records inserted successfully!');
             return redirect()->route('procurements.index')->with('succcess', 'Penambahan berhasil');
         } catch (\Exception $e) {

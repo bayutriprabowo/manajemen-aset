@@ -45,6 +45,7 @@
         <thead>
             <tr>
                 <th>Transaction Date</th>
+                <th>Barcode</th>
                 <th>Item Name</th>
                 <th>Kode</th>
                 <th>In</th>
@@ -59,11 +60,13 @@
                 <td>{{ 'saldo awal' }}</td>
                 <td></td>
                 <td></td>
+                <td></td>
                 <td>{{ $closingBalance }}</td>
             </tr>
             @foreach ($transactions as $transaction)
                 <tr>
                     <td>{{ $transaction->transaction_date }}</td>
+                    <td>{{ $transaction->masterItem->barcode }}</td>
                     <td>{{ $transaction->masterItem->name }}</td>
                     <td>{{ $transaction->code }}</td>
                     <td>{{ $transaction->in }}</td>

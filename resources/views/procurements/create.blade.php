@@ -29,7 +29,7 @@
                                     <th>Keterangan</th>
                                     <th>Total</th>
                                     <th>Vendor</th>
-                                    <th>Pengusul</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -51,7 +51,7 @@
                                                 </option>
                                             @endforeach
                                         </select></td>
-                                    <td><input type="text" name="user_id" id="user_id"
+                                    <td><input type="hidden" name="user_id" id="user_id"
                                             value="{{ auth()->user()->id }}" readonly></td>
                                     </td>
                                 </tr>

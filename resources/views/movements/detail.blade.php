@@ -150,6 +150,7 @@
                                     @foreach ($movementDetails as $detail)
                                         <tr>
                                             <td>{{ $detail->id }}</td>
+                                            <td>{{ $detail->masterItem->barcode }}</td>
                                             <td>{{ $detail->masterItem->name }}</td>
                                             <td>{{ $detail->stock }}</td>
                                             <td>{{ $detail->quantity }}</td>

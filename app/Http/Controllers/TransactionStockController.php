@@ -80,6 +80,6 @@ class TransactionStockController extends Controller
         ];
 
         $pdf = Pdf::loadView('stocks.generate_pdf', $data);
-        return $pdf->download('report_stock.pdf');
+        return $pdf->stream('report_stock.pdf');
     }
 }
