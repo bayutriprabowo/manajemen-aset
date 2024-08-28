@@ -86,4 +86,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(TransactionItemMovementHeader::class, 'user_id');
     }
+
+    public function monitoringForm()
+    {
+        return $this->hasMany(TransactionMonitoringForm::class, 'user_id');
+    }
 }

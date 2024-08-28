@@ -15,6 +15,7 @@ use App\Http\Controllers\MasterVendorItemController;
 use App\Http\Controllers\TransactionIncomingItemController;
 use App\Http\Controllers\TransactionItemMovementController;
 use App\Http\Controllers\TransactionItemProcurementController;
+use App\Http\Controllers\TransactionMonitoringController;
 use App\Http\Controllers\TransactionOutgoingItemController;
 use App\Http\Controllers\TransactionStockController;
 
@@ -121,8 +122,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/procurements', [TransactionItemProcurementController::class, 'index'])->name('procurements.index');
     Route::get('/procurements.create', [TransactionItemProcurementController::class, 'create'])->name('procurements.create');
     Route::post('/procurements.store', [TransactionItemProcurementController::class, 'store'])->name('procurements.store');
-    // Route::get('/procurements.edit/{id}', [TransactionItemProcurementController::class, 'edit'])->name('procurements.edit');
-    // Route::put('procurements.update/{id}', [TransactionItemProcurementController::class, 'update'])->name('procurements.update');
     Route::delete('procurements/{id}', [TransactionItemProcurementController::class, 'destroy'])->name('procurements.destroy');
 
     // procurement detail untuk approvement
@@ -136,8 +135,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/incoming_items', [TransactionIncomingItemController::class, 'index'])->name('incoming_items.index');
     Route::get('/incoming_items.create', [TransactionIncomingItemController::class, 'create'])->name('incoming_items.create');
     Route::post('/incoming_items.store', [TransactionIncomingItemController::class, 'store'])->name('incoming_items.store');
-    // Route::get('/incoming_items.edit/{id}', [TransactionIncomingItemController::class, 'edit'])->name('incoming_items.edit');
-    // Route::put('incoming_items.update/{id}', [TransactionIncomingItemController::class, 'update'])->name('incoming_items.update');
     Route::delete('incoming_items/{id}', [TransactionIncomingItemController::class, 'destroy'])->name('incoming_items.destroy');
 });
 
@@ -146,8 +143,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/outgoing_items', [TransactionOutgoingItemController::class, 'index'])->name('outgoing_items.index');
     Route::get('/outgoing_items.create', [TransactionOutgoingItemController::class, 'create'])->name('outgoing_items.create');
     Route::post('/outgoing_items.store', [TransactionOutgoingItemController::class, 'store'])->name('outgoing_items.store');
-    // Route::get('/outgoing_items.edit/{id}', [TransactionOutgoingItemController::class, 'edit'])->name('outgoing_items.edit');
-    // Route::put('outgoing_items.update/{id}', [TransactionOutgoingItemController::class, 'update'])->name('outgoing_items.update');
     Route::delete('outgoing_items/{id}', [TransactionOutgoingItemController::class, 'destroy'])->name('outgoing_items.destroy');
 });
 
@@ -156,8 +151,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/movements', [TransactionItemMovementController::class, 'index'])->name('movements.index');
     Route::get('/movements.create', [TransactionItemMovementController::class, 'create'])->name('movements.create');
     Route::post('/movements.store', [TransactionItemMovementController::class, 'store'])->name('movements.store');
-    // Route::get('/movements.edit/{id}', [TransactionItemMovementController::class, 'edit'])->name('movements.edit');
-    // Route::put('movements.update/{id}', [TransactionItemMovementController::class, 'update'])->name('movements.update');
     Route::delete('movements/{id}', [TransactionItemMovementController::class, 'destroy'])->name('movements.destroy');
 
     // procurement detail untuk approvement
@@ -165,22 +158,28 @@ Route::middleware('auth')->group(function () {
     Route::put('movements.approve/{id}', [TransactionItemMovementController::class, 'approve'])->name('movements.approve');
     Route::put('movements.reject/{id}', [TransactionItemMovementController::class, 'reject'])->name('movements.reject');
 });
-
+// stok
 Route::middleware('auth')->group(function () {
     Route::get('/stocks', [TransactionStockController::class, 'index'])->name('stocks.index');
     Route::get('/stocks.filter', [TransactionStockController::class, 'filter'])->name('stocks.filter');
     Route::get('/stocks.generate_pdf', [TransactionStockController::class, 'generatePDF'])->name('stocks.generatePDF');
+});
 
-    // Route::get('/stocks.create', [TransactionStockController::class, 'create'])->name('stocks.create');
-    // Route::post('/stocks.store', [TransactionStockController::class, 'store'])->name('stocks.store');
-    // // Route::get('/stocks.edit/{id}', [TransactionStockController::class, 'edit'])->name('stocks.edit');
-    // // Route::put('stocks.update/{id}', [TransactionStockController::class, 'update'])->name('stocks.update');
-    // Route::delete('stocks/{id}', [TransactionStockController::class, 'destroy'])->name('stocks.destroy');
+Route::middleware('auth')->group(function () {
+    Route::get('/monitorings', [TransactionMonitoringController::class, 'index'])->name('monitorings.index');
+    Route::get('/monitorings.create', [TransactionMonitoringController::class, 'create'])->name('monitorings.create');
+    Route::post('/monitorings.store', [TransactionMonitoringController::class, 'store'])->name('monitorings.store');
+    Route::get('/monitorings.edit/{id}', [TransactionMonitoringController::class, 'edit'])->name('monitorings.edit');
+    Route::put('monitorings.update/{id}', [TransactionMonitoringController::class, 'update'])->name('monitorings.update');
 
-    // // procurement detail untuk approvement
-    // Route::get('/stocks.detail/{id}', [TransactionStockController::class, 'detail'])->name('stocks.detail');
-    // Route::put('stocks.approve/{id}', [TransactionStockController::class, 'approve'])->name('stocks.approve');
-    // Route::put('stocks.reject/{id}', [TransactionStockController::class, 'reject'])->name('stocks.reject');
+    Route::get('/monitorings.detail/{id}', [TransactionMonitoringController::class, 'detail'])->name('monitorings.detail');
+
+    Route::put('/monitorings.process/{id}', [TransactionMonitoringController::class, 'process'])->name('monitorings.process');
+    Route::put('/monitorings.postpone/{id}', [TransactionMonitoringController::class, 'postpone'])->name('monitorings.postpone');
+    Route::put('/monitorings.complete/{id}', [TransactionMonitoringController::class, 'complete'])->name('monitorings.complete');
+    Route::put('/monitorings.cancel/{id}', [TransactionMonitoringController::class, 'cancel'])->name('monitorings.cancel');
+
+    Route::get('/monitorings.filter', [TransactionMonitoringController::class, 'filter'])->name('monitorings.filter');
 });
 
 

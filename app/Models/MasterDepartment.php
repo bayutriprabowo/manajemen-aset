@@ -61,4 +61,14 @@ class MasterDepartment extends Model
     {
         return $this->hasMany(TransactionItemMovementHeader::class, 'department_id_to');
     }
+
+    public function monitoringForm()
+    {
+        return $this->hasMany(TransactionMonitoringForm::class, 'department_id');
+    }
+
+    public function monitoringLog()
+    {
+        return $this->hasMany(TransactionMonitoringLog::class, 'department_id');
+    }
 }
