@@ -58,6 +58,7 @@
                         <a class="nav-link" href="{{ route('outgoing_items.index') }}">Barang Keluar</a>
                         <a class="nav-link" href="{{ route('movements.index') }}">Mutasi Barang</a>
                         <a class="nav-link" href="{{ route('stocks.index') }}">Stok Barang</a>
+                        <a class="nav-link" href="{{ route('monitorings.index') }}">Monitoring Barang</a>
                     </nav>
                 </div>
 

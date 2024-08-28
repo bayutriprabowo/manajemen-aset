@@ -21,14 +21,14 @@
                     <a class="btn btn-success" href="{{ route('monitorings.edit', $id) }}">Edit Monitoring Barang</a>
                     <div class="card mb-4">
                         <div class="card-body">
-                            Data ini merupakan mutasi barang, apabila ada
+                            Data ini merupakan detail monitoring barang, apabila ada
                             masalah silakan hubungi kewenangan diatasnya.
                         </div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            DataTable Mutasi Barang
+                            DataTable Detail Monitoring Barang
                         </div>
                         <div class="card-body">
                             <!-- procurement header -->
