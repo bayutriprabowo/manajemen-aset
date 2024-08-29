@@ -85,17 +85,21 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
-
+                                    @php
+                                        use Carbon\Carbon;
+                                    @endphp
                                     @foreach ($monitoringForms as $form)
                                         @php
-                                        use Carbon\Carbon;
-                                            $transactionDate = \Carbon\Carbon::parse($form->transaction_date);
-                                            $currentDate = \Carbon\Carbon::now();
 
-                                            $isDayPassed = $currentDate->diffInDays($transactionDate) >= 1;
-                                            $isWeekPassed = $currentDate->diffInWeeks($transactionDate) >= 1;
-                                            $isMonthPassed = $currentDate->diffInMonths($transactionDate) >= 1;
-                                            $isYearPassed = $currentDate->diffInYears($transactionDate) >= 1;
+                                            $transactionDate = Carbon::parse($form->transaction_date);
+                                            $transactionDate->setTimezone('Asia/Jakarta');
+                                            $currentDate = Carbon::now();
+                                            $currentDate->setTimeZone('Asia/Jakarta');
+
+                                            $isDayPassed = $transactionDate->diffInDays($currentDate) >= 1;
+                                            $isWeekPassed = $transactionDate->diffInWeeks($currentDate) >= 1;
+                                            $isMonthPassed = $transactionDate->diffInMonths($currentDate) >= 1;
+                                            $isYearPassed = $transactionDate->diffInYears($currentDate) >= 1;
                                         @endphp
 
                                         <tr>
@@ -271,48 +275,69 @@
 
                         if (response.monitorings && response.monitorings.length > 0) {
                             $.each(response.monitorings, function(index, monitoring) {
-
                                 var actionButtons = '';
 
-                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
-                                    if (monitoring.status != 'in_progress') {
-                                        actionButtons +=
-                                            '<a href="#" class="btn btn-primary" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to process this movement?\')) { document.getElementById(\'process-monitoring-' +
-                                            monitoring.id +
-                                            '\').submit(); }"><i class="fa-solid fa-play" aria-hidden="true"></i></a>';
-                                    }
-                                    if (monitoring.status != 'completed') {
-                                        actionButtons +=
-                                            '<a href="#" class="btn btn-success" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to complete this movement?\')) { document.getElementById(\'complete-monitoring-' +
-                                            monitoring.id +
-                                            '\').submit(); }"><i class="fa fa-check-circle" aria-hidden="true"></i></a>';
-                                    }
-                                @endif
+                                // Ambil tanggal transaksi dan tanggal saat ini
+                                var transactionDate = new Date(monitoring
+                                    .transaction_date);
+                                var currentDate = new Date();
 
-                                @if (auth()->user()->masterRole->name == 'superuser' ||
-                                        auth()->user()->masterRole->name == 'admin' ||
-                                        auth()->user()->masterRole->name == 'user')
-                                    actionButtons +=
-                                        '<a class="btn btn-primary" href="{{ route('monitorings.detail', '') }}/' +
-                                        monitoring.id +
-                                        '"><i class="fa fa-eye" aria-hidden="true"></i></a>';
-                                @endif
+                                // Hitung selisih hari
+                                var diffTime = Math.abs(currentDate - transactionDate);
+                                var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 *
+                                    24));
 
-                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
-                                    if (monitoring.status != 'postponed') {
-                                        actionButtons +=
-                                            '<a href="#" class="btn btn-warning" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to postpone this movement?\')) { document.getElementById(\'postpone-monitoring-' +
-                                            monitoring.id +
-                                            '\').submit(); }"><i class="fa fa-ban" aria-hidden="true"></i></a>';
-                                    }
-                                    if (monitoring.status != 'cancelled') {
-                                        actionButtons +=
-                                            '<a href="#" class="btn btn-danger" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to cancel this movement?\')) { document.getElementById(\'cancel-monitoring-' +
-                                            monitoring.id +
-                                            '\').submit(); }"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-                                    }
-                                @endif
+                                // Kondisi untuk menampilkan action berdasarkan periode
+                                var periodMap = {
+                                    'daily': 1,
+                                    'weekly': 7,
+                                    'monthly': 30,
+                                    'yearly': 365
+                                };
+                                var periodDays = periodMap[monitoring.period
+                                    .toLowerCase()] || 0;
 
+                                // Tampilkan tombol action jika sudah memenuhi tanggal dan periode
+                                if (diffDays >= periodDays) {
+                                    @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                        if (monitoring.status != 'in_progress') {
+                                            actionButtons +=
+                                                '<a href="#" class="btn btn-primary" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to process this movement?\')) { document.getElementById(\'process-monitoring-' +
+                                                monitoring.id +
+                                                '\').submit(); }"><i class="fa-solid fa-play" aria-hidden="true"></i></a>';
+                                        }
+                                        if (monitoring.status != 'completed') {
+                                            actionButtons +=
+                                                '<a href="#" class="btn btn-success" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to complete this movement?\')) { document.getElementById(\'complete-monitoring-' +
+                                                monitoring.id +
+                                                '\').submit(); }"><i class="fa fa-check-circle" aria-hidden="true"></i></a>';
+                                        }
+                                    @endif
+
+                                    @if (auth()->user()->masterRole->name == 'superuser' ||
+                                            auth()->user()->masterRole->name == 'admin' ||
+                                            auth()->user()->masterRole->name == 'user')
+                                        actionButtons +=
+                                            '<a class="btn btn-primary" href="{{ route('monitorings.detail', '') }}/' +
+                                            monitoring.id +
+                                            '"><i class="fa fa-eye" aria-hidden="true"></i></a>';
+                                    @endif
+
+                                    @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                        if (monitoring.status != 'postponed') {
+                                            actionButtons +=
+                                                '<a href="#" class="btn btn-warning" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to postpone this movement?\')) { document.getElementById(\'postpone-monitoring-' +
+                                                monitoring.id +
+                                                '\').submit(); }"><i class="fa fa-ban" aria-hidden="true"></i></a>';
+                                        }
+                                        if (monitoring.status != 'cancelled') {
+                                            actionButtons +=
+                                                '<a href="#" class="btn btn-danger" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to cancel this movement?\')) { document.getElementById(\'cancel-monitoring-' +
+                                                monitoring.id +
+                                                '\').submit(); }"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                                        }
+                                    @endif
+                                }
 
                                 var row = '<tr>' +
                                     '<td>' + monitoring.id + '</td>' +
