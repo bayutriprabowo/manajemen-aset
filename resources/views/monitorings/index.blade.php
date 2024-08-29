@@ -145,52 +145,51 @@
                                                 @endif
                                             </td>
                                             <td>
+
+                                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                                    @if ($form->status != 'in_progress')
+                                                        <a href="#" class="btn btn-primary"
+                                                            onclick="event.preventDefault(); if(confirm('Are you sure you want to process this movement?')) { document.getElementById('process-monitoring-{{ $form->id }}').submit(); }"><i
+                                                                class="fa-solid fa-play" aria-hidden="true"></i></a>
+                                                    @endif
+                                                @endif
+
+                                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                                    @if ($form->status != 'completed')
+                                                        <a href="#" class="btn btn-success"
+                                                            onclick="event.preventDefault(); if(confirm('Are you sure you want to complete this movement?')) { document.getElementById('complete-monitoring-{{ $form->id }}').submit(); }"><i
+                                                                class="fa fa-check-circle" aria-hidden="true"></i></a>
+                                                    @endif
+                                                @endif
                                                 @if (
                                                     ($form->period == 'daily' && $isDayPassed) ||
                                                         ($form->period == 'weekly' && $isWeekPassed) ||
                                                         ($form->period == 'monthly' && $isMonthPassed) ||
                                                         ($form->period == 'yearly' && $isYearPassed) ||
                                                         auth()->user()->masterRole->name == 'superuser')
-                                                    @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
-                                                        @if ($form->status != 'in_progress')
-                                                            <a href="#" class="btn btn-primary"
-                                                                onclick="event.preventDefault(); if(confirm('Are you sure you want to process this movement?')) { document.getElementById('process-monitoring-{{ $form->id }}').submit(); }"><i
-                                                                    class="fa-solid fa-play" aria-hidden="true"></i></a>
-                                                        @endif
-                                                    @endif
-
-                                                    @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
-                                                        @if ($form->status != 'completed')
-                                                            <a href="#" class="btn btn-success"
-                                                                onclick="event.preventDefault(); if(confirm('Are you sure you want to complete this movement?')) { document.getElementById('complete-monitoring-{{ $form->id }}').submit(); }"><i
-                                                                    class="fa fa-check-circle"
-                                                                    aria-hidden="true"></i></a>
-                                                        @endif
-                                                    @endif
-
                                                     {{-- @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin' || auth()->user()->masterRole->name == 'user') --}}
                                                     <a class="btn btn-primary"
                                                         href="{{ route('monitorings.detail', $form->id) }}"><i
                                                             class="fa fa-eye" aria-hidden="true"></i></a>
                                                     {{-- @endif --}}
-
-                                                    @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
-                                                        @if ($form->status != 'postponed')
-                                                            <a href="#" class="btn btn-warning"
-                                                                onclick="event.preventDefault(); if(confirm('Are you sure you want to postpone this movement?')) { document.getElementById('postpone-monitoring-{{ $form->id }}').submit(); }"><i
-                                                                    class="fa fa-ban" aria-hidden="true"></i></i></a>
-                                                        @endif
-                                                    @endif
-
-                                                    {{-- <a class="btn btn-warning" href="{{ route('vendors.edit', $vendor->id) }}">edit</a> --}}
-                                                    @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
-                                                        @if ($form->status != 'cancelled')
-                                                            <a href="#" class="btn btn-danger"
-                                                                onclick="event.preventDefault(); if(confirm('Are you sure you want to cancel this movement?')) { document.getElementById('cancel-monitoring-{{ $form->id }}').submit(); }"><i
-                                                                    class="fa fa-trash" aria-hidden="true"></i></a>
-                                                        @endif
+                                                @endif
+                                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                                    @if ($form->status != 'postponed')
+                                                        <a href="#" class="btn btn-warning"
+                                                            onclick="event.preventDefault(); if(confirm('Are you sure you want to postpone this movement?')) { document.getElementById('postpone-monitoring-{{ $form->id }}').submit(); }"><i
+                                                                class="fa fa-ban" aria-hidden="true"></i></i></a>
                                                     @endif
                                                 @endif
+
+                                                {{-- <a class="btn btn-warning" href="{{ route('vendors.edit', $vendor->id) }}">edit</a> --}}
+                                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                                    @if ($form->status != 'cancelled')
+                                                        <a href="#" class="btn btn-danger"
+                                                            onclick="event.preventDefault(); if(confirm('Are you sure you want to cancel this movement?')) { document.getElementById('cancel-monitoring-{{ $form->id }}').submit(); }"><i
+                                                                class="fa fa-trash" aria-hidden="true"></i></a>
+                                                    @endif
+                                                @endif
+
 
                                                 <form id="complete-monitoring-{{ $form->id }}"
                                                     action="{{ route('monitorings.complete', $form->id) }}"
@@ -298,22 +297,22 @@
                                     .toLowerCase()] || 0;
 
                                 // Tampilkan tombol action jika sudah memenuhi tanggal dan periode
-                                if (diffDays >= periodDays) {
-                                    @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
-                                        if (monitoring.status != 'in_progress') {
-                                            actionButtons +=
-                                                '<a href="#" class="btn btn-primary" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to process this movement?\')) { document.getElementById(\'process-monitoring-' +
-                                                monitoring.id +
-                                                '\').submit(); }"><i class="fa-solid fa-play" aria-hidden="true"></i></a>';
-                                        }
-                                        if (monitoring.status != 'completed') {
-                                            actionButtons +=
-                                                '<a href="#" class="btn btn-success" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to complete this movement?\')) { document.getElementById(\'complete-monitoring-' +
-                                                monitoring.id +
-                                                '\').submit(); }"><i class="fa fa-check-circle" aria-hidden="true"></i></a>';
-                                        }
-                                    @endif
 
+                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                    if (monitoring.status != 'in_progress') {
+                                        actionButtons +=
+                                            '<a href="#" class="btn btn-primary" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to process this movement?\')) { document.getElementById(\'process-monitoring-' +
+                                            monitoring.id +
+                                            '\').submit(); }"><i class="fa-solid fa-play" aria-hidden="true"></i></a>';
+                                    }
+                                    if (monitoring.status != 'completed') {
+                                        actionButtons +=
+                                            '<a href="#" class="btn btn-success" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to complete this movement?\')) { document.getElementById(\'complete-monitoring-' +
+                                            monitoring.id +
+                                            '\').submit(); }"><i class="fa fa-check-circle" aria-hidden="true"></i></a>';
+                                    }
+                                @endif
+                                if (diffDays >= periodDays) {
                                     @if (auth()->user()->masterRole->name == 'superuser' ||
                                             auth()->user()->masterRole->name == 'admin' ||
                                             auth()->user()->masterRole->name == 'user')
@@ -322,22 +321,22 @@
                                             monitoring.id +
                                             '"><i class="fa fa-eye" aria-hidden="true"></i></a>';
                                     @endif
-
-                                    @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
-                                        if (monitoring.status != 'postponed') {
-                                            actionButtons +=
-                                                '<a href="#" class="btn btn-warning" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to postpone this movement?\')) { document.getElementById(\'postpone-monitoring-' +
-                                                monitoring.id +
-                                                '\').submit(); }"><i class="fa fa-ban" aria-hidden="true"></i></a>';
-                                        }
-                                        if (monitoring.status != 'cancelled') {
-                                            actionButtons +=
-                                                '<a href="#" class="btn btn-danger" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to cancel this movement?\')) { document.getElementById(\'cancel-monitoring-' +
-                                                monitoring.id +
-                                                '\').submit(); }"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-                                        }
-                                    @endif
                                 }
+                                @if (auth()->user()->masterRole->name == 'superuser' || auth()->user()->masterRole->name == 'admin')
+                                    if (monitoring.status != 'postponed') {
+                                        actionButtons +=
+                                            '<a href="#" class="btn btn-warning" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to postpone this movement?\')) { document.getElementById(\'postpone-monitoring-' +
+                                            monitoring.id +
+                                            '\').submit(); }"><i class="fa fa-ban" aria-hidden="true"></i></a>';
+                                    }
+                                    if (monitoring.status != 'cancelled') {
+                                        actionButtons +=
+                                            '<a href="#" class="btn btn-danger" onclick="event.preventDefault(); if(confirm(\'Are you sure you want to cancel this movement?\')) { document.getElementById(\'cancel-monitoring-' +
+                                            monitoring.id +
+                                            '\').submit(); }"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                                    }
+                                @endif
+
 
                                 var row = '<tr>' +
                                     '<td>' + monitoring.id + '</td>' +
