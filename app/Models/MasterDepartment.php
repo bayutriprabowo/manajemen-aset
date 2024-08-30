@@ -71,4 +71,9 @@ class MasterDepartment extends Model
     {
         return $this->hasMany(TransactionMonitoringLog::class, 'department_id');
     }
+
+    public function deprectiation()
+    {
+        return $this->hasMany(TransactionDepreciation::class, 'department_id');
+    }
 }

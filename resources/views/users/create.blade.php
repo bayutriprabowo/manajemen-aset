@@ -32,6 +32,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+
                                 <!-- Rows will be added here -->
                             </tbody>
                         </table>
@@ -56,34 +57,6 @@
 
     {{-- <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> --}}
     <script src="cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize DataTable
-            var table = new DataTable('#datatable');
-
-            document.getElementById('addRow').addEventListener('click', function() {
-                var tbody = document.querySelector('#datatable tbody');
-                var newRow = document.createElement('tr');
-
-                newRow.innerHTML = `
-                    <td><input type="text" name="name[]" class="form-control" required></td>
-                    <td><input type="email" name="email[]" class="form-control" required></td>
-                    <td><input type="number" name="age[]" class="form-control" required></td>
-                    <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
-                `;
-
-                tbody.appendChild(newRow);
-            });
-
-            document.querySelector('#datatable tbody').addEventListener('click', function(e) {
-                if (e.target.classList.contains('removeRow')) {
-                    var row = e.target.closest('tr');
-                    row.remove();
-                }
-            });
-        });
-    </script> --}}
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize DataTable
@@ -103,38 +76,49 @@
                 }
 
                 var optionsCompany = `<option value="">Pilih Perusahaan</option>
-                @foreach ($masterCompany as $company)
-                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                @endforeach`;
+    @foreach ($masterCompany as $company)
+        <option value="{{ $company->id }}">{{ $company->name }}</option>
+    @endforeach`;
 
                 var optionsRole = `<option value="">Pilih Role</option>
-                @foreach ($masterRole as $role)
-                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                @endforeach`;
+    @foreach ($masterRole as $role)
+        <option value="{{ $role->id }}">{{ $role->name }}</option>
+    @endforeach`;
 
                 var newRow = document.createElement('tr');
                 newRow.innerHTML = `
-                    <td><input type="text" name="nip[]" class="form-control" required></td>
-                    <td><input type="text" name="name[]" class="form-control" required></td>
-                    <td><input type="email" name="email[]" class="form-control" required></td>
-                    <td><input type="text" name="password[]" class="form-control" required></td>
-                    <td><input type="text" name="address[]" class="form-control" required></td>
-                    <td><input type="text" name="position[]" class="form-control" required></td>
-                    <td>
-                        <select name="company_id[]" class="form-control" required>
-                            ${optionsCompany}
-                        </select>
-                    </td>
-                    <td>
-                        <select name="role_id[]" class="form-control" required>
-                            ${optionsRole}
-                        </select>
-                    </td>
-                    <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
-                `;
+        <td><input type="text" name="nip[]" class="form-control" required></td>
+        <td><input type="text" name="name[]" class="form-control" required></td>
+        <td><input type="email" name="email[]" class="form-control" required></td>
+        <td><input type="text" name="password[]" class="form-control" required></td>
+        <td><input type="text" name="address[]" class="form-control" required></td>
+        <td><input type="text" name="position[]" class="form-control" required></td>
+        <td class="col-2">
+            <select name="company_id[]" class="form-control choices-js" required>
+                ${optionsCompany}
+            </select>
+        </td>
+        <td class="col-2">
+            <select name="role_id[]" class="form-control choices-js" required>
+                ${optionsRole}
+            </select>
+        </td>
+        <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
+    `;
 
                 tbody.appendChild(newRow);
                 console.log('New row added');
+
+                // Initialize Choices.js on the newly added select elements
+                new Choices(newRow.querySelector('select[name="company_id[]"]'), {
+                    searchEnabled: true,
+                    itemSelectText: '',
+                });
+
+                new Choices(newRow.querySelector('select[name="role_id[]"]'), {
+                    searchEnabled: true,
+                    itemSelectText: '',
+                });
             });
 
             // Remove row functionality
@@ -148,6 +132,14 @@
                         console.error('Row not found');
                     }
                 }
+            });
+
+            // Initialize Choices.js on any select elements that already exist on page load
+            document.querySelectorAll('select.choices-js').forEach(function(select) {
+                new Choices(select, {
+                    searchEnabled: true,
+                    itemSelectText: '',
+                });
             });
         });
     </script>

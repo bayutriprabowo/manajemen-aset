@@ -91,4 +91,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(TransactionMonitoringForm::class, 'user_id');
     }
+
+    public function depreciation()
+    {
+        return $this->hasMany(TransactionDepreciation::class, 'user_id');
+    }
 }

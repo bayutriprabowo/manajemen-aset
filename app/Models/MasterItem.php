@@ -64,6 +64,11 @@ class MasterItem extends Model
         return $this->hasMany(TransactionMonitoringLog::class, 'item_id');
     }
 
+    public function depreciation()
+    {
+        return $this->hasMany(TransactionDepreciation::class, 'item_id');
+    }
+
     // public function masterCompany(): BelongsTo
     // {
     //     return $this->belongsTo(MasterCompany::class, 'company_id');

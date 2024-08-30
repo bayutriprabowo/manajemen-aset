@@ -47,7 +47,7 @@ class MasterItemController extends Controller
     {
         $masterItemTypes = MasterItemType::all();
         $item = MasterItem::findOrFail($id);
-        return view('master_items.edit', compact(['item']));
+        return view('master_items.edit', compact(['item', 'masterItemTypes']));
     }
 
     public function update(Request $request, $id)

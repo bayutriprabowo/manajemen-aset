@@ -12,6 +12,7 @@ use App\Http\Controllers\MasterItemStatusController;
 use App\Http\Controllers\MasterSectionController;
 use App\Http\Controllers\MasterVendorController;
 use App\Http\Controllers\MasterVendorItemController;
+use App\Http\Controllers\TransactionDepreciationController;
 use App\Http\Controllers\TransactionIncomingItemController;
 use App\Http\Controllers\TransactionItemMovementController;
 use App\Http\Controllers\TransactionItemProcurementController;
@@ -180,6 +181,15 @@ Route::middleware('auth')->group(function () {
     Route::put('/monitorings.cancel/{id}', [TransactionMonitoringController::class, 'cancel'])->name('monitorings.cancel');
 
     Route::get('/monitorings.filter', [TransactionMonitoringController::class, 'filter'])->name('monitorings.filter');
+});
+
+// depresiasi
+Route::middleware('auth')->group(function () {
+    Route::get('/depreciations', [TransactionDepreciationController::class, 'index'])->name('depreciations.index');
+    Route::get('/depreciations.create', [TransactionDepreciationController::class, 'create'])->name('depreciations.create');
+    Route::post('/depreciations.store', [TransactionDepreciationController::class, 'store'])->name('depreciations.store');
+    Route::delete('depreciations/{id}', [TransactionDepreciationController::class, 'destroy'])->name('depreciations.destroy');
+    Route::get('/get_price', [TransactionDepreciationController::class, 'getPrice'])->name('get_price');
 });
 
 
