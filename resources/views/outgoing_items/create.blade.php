@@ -14,7 +14,6 @@
                 <div class="container-fluid px-4">
                     <!-- isi table -->
                     <h1>Form Input Barang Keluar</h1>
-                    {{-- <button id="addRow" class="btn btn-success">Add Row</button> --}}
 
                     <table class="table">
                         <thead>
@@ -23,18 +22,14 @@
                                 <th>Kode</th>
                                 <th>Item/Barang</th>
                                 <th>Departemen</th>
-                                <th>User</th>
-                                <th>Jumlah</th>
-                                <th>Status_Barang</th>
-                                <th>Keterangan</th>
-                                <th>Tujuan</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><input type="date" id="transaction_date" required></td>
                                 <td><input type="text" id="code" readonly required></td>
-                                <td>
+                                <td class="col-3">
                                     <select id="item_id" class="form-control item-id mb-3" required>
                                         <option value="">Pilih Item</option>
                                         @foreach ($masterItems as $item)
@@ -44,7 +39,7 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td>
+                                <td class="col-3">
                                     <select id="department_id" class="form-control item-id mb-3" required>
                                         <option value="">Pilih Departemen</option>
                                         @foreach ($masterDepartments as $department)
@@ -54,13 +49,27 @@
                                         @endforeach
                                     </select>
                                 </td>
+
+                            </tr>
+
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Jumlah</th>
+                                <th>Status_Barang</th>
+                                <th>Keterangan</th>
+                                <th>Tujuan</th>
+                            </tr>
+                        <tbody>
+                            <tr>
                                 <td>
                                     <input id="user_id" type="hidden" value="{{ auth()->user()->id }}" readonly
                                         required>
                                     {{ auth()->user()->name }}
                                 </td>
                                 <td><input type="text" id="quantity" required></td>
-                                <td>
+                                <td class="col-3">
                                     <select id="status_id" class="form-control item-id mb-3">
                                         <option value="">Pilih Status</option>
                                         @foreach ($masterItemStatuses as $status)
@@ -78,6 +87,7 @@
                                 <td><input type="hidden" id="maxId" value="{{ $maxId }}" readonly></td>
                             </tr>
                         </tbody>
+                        </thead>
                     </table>
 
                     <form id="dataForm" action="{{ route('outgoing_items.store') }}" method="POST">
@@ -113,18 +123,25 @@
     @include('templates.script')
 
     <script src="https://cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script>
         $(document).ready(function() {
+            // Initialize Choices.js for select elements
+            var itemChoices = new Choices('#item_id', {
+                removeItemButton: true
+            });
+            var departmentChoices = new Choices('#department_id', {
+                removeItemButton: true
+            });
+            var statusChoices = new Choices('#status_id', {
+                removeItemButton: true
+            });
+
             $('#transaction_date').on('change', function() {
-
                 var maxId = $('#maxId').val();
-
                 var maxCodeNumber = 0;
-
-
 
                 // Reset the #code input field before generating a new one
                 $('#code').val('');
@@ -142,7 +159,6 @@
 
                 $('#code').val(newCode);
             });
-
 
             $('#addRow').click(function() {
                 var transactionDate = $('#transaction_date').val();
@@ -165,8 +181,7 @@
                         var existingItemId = $(this).find('input[name="item_id[]"]').val();
                         var existingDepartmentId = $(this).find('input[name="department_id[]"]')
                             .val();
-                        if (existingItemId === itemId && existingDepartmentId ===
-                            departmentId) {
+                        if (existingItemId === itemId && existingDepartmentId === departmentId) {
                             isDuplicate = true;
                             return false;
                         }
@@ -196,20 +211,21 @@
 
                     $('#transaction_date').val('');
                     $('#code').val('');
-                    $('#item_id').val('');
-                    $('#department_id').val('');
+                    itemChoices.clearStore();
+                    departmentChoices.clearStore();
+                    $('#user_id').val('');
                     $('#quantity').val('');
-                    $('#status_id').val('');
+                    statusChoices.clearStore();
                     $('#description').val('');
                     $('#purpose').val('');
+                } else {
+                    alert('Pilih item dan departemen sebelum menambahkan.');
                 }
             });
 
-            $('#datatable').on('click', '.delete-row', function() {
+            $(document).on('click', '.delete-row', function() {
                 $(this).closest('tr').remove();
             });
         });
     </script>
 </body>
-
-</html>

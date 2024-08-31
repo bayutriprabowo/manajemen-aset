@@ -27,7 +27,7 @@
                                 value="{{ $department->address }}">
                             <label for="department_number">Nomor Perusahaan:</label>
                             <input type="text" class="form-control" id="department_number" name="department_number"
-                                value="{{ $department->company_number }}">
+                                value="{{ $department->department_number }}">
                             <label for="contact_person">Contact Person:</label>
                             <input type="text" class="form-control" id="contact_person" name="contact_person"
                                 value="{{ $department->contact_person }}">
@@ -36,7 +36,7 @@
                                 name="contact_person_number" value="{{ $department->contact_person_number }}">
                             <label for="company_id">Perusahaan:</label>
                             <select class="form-control" id="company_id" name="company_id">
-                                @foreach ($masterCompany as $company)
+                                @foreach ($masterCompanies as $company)
                                     <option value="{{ $company->id }}"
                                         {{ $department->company_id == $company->id ? 'selected' : '' }}>
                                         {{ $company->name }}
@@ -62,6 +62,14 @@
     </div>
     <!-- end layout sidenav -->
     @include('templates.script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Choices.js for the company_id select element
+            var companySelect = new Choices('#company_id', {
+                shouldSort: false
+            });
+        });
+    </script>
 </body>
 
 </html>

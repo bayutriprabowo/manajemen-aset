@@ -19,8 +19,8 @@ class MasterDepartmentController extends Controller
 
     public function create()
     {
-        $masterCompany = MasterCompany::all();
-        return view('master_departments.create', compact(['masterCompany']));
+        $masterCompanies = MasterCompany::all();
+        return view('master_departments.create', compact(['masterCompanies']));
     }
 
     public function store(Request $request)
@@ -50,8 +50,9 @@ class MasterDepartmentController extends Controller
     // edit
     public function edit($id)
     {
+        $masterCompanies = MasterCompany::all();
         $department = MasterDepartment::findOrFail($id);
-        return view('master_departments.edit', compact(['department']));
+        return view('master_departments.edit', compact(['department', 'masterCompanies']));
     }
 
     public function update(Request $request, $id)

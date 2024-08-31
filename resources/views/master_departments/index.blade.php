@@ -64,7 +64,7 @@
                                             <td>{{ $department->id }}</td>
                                             <td>{{ $department->name }}</td>
                                             <td>{{ $department->address }}</td>
-                                            <td>{{ $department->deparment_number }}</td>
+                                            <td>{{ $department->department_number }}</td>
                                             <td>{{ $department->contact_person }}</td>
                                             <td>{{ $department->contact_person_number }}</td>
                                             <td>{{ $department->masterCompany->name }}</td>

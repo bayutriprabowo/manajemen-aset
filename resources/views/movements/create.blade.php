@@ -29,9 +29,7 @@
                                     <th>Kode</th>
                                     <th>Departemen Dari</th>
                                     <th>Departemen Ke</th>
-                                    <th>Tujuan</th>
-                                    <th>Status Barang</th>
-                                    <th>Keterangan</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,7 +43,7 @@
                                     <input type="hidden" name="user_id" id="user_id" value="{{ auth()->user()->id }}"
                                         readonly>
                                     </td>
-                                    <td><select name="department_id_from" id="department_id_from"
+                                    <td class="col-3"><select name="department_id_from" id="department_id_from"
                                             class="form-control item-id mb-3" required>
                                             <option value="">Departemen Dari:</option>
                                             @foreach ($masterDepartments as $department)
@@ -55,7 +53,7 @@
                                                 </option>
                                             @endforeach
                                         </select></td>
-                                    <td><select name="department_id_to" id="department_id_to"
+                                    <td class="col-3"><select name="department_id_to" id="department_id_to"
                                             class="form-control item-id mb-3" required>
                                             <option value="">Departemen Ke:</option>
                                             @foreach ($masterDepartments as $department)
@@ -65,9 +63,23 @@
                                                 </option>
                                             @endforeach
                                         </select></td>
+
+
+                                </tr>
+
+                            </tbody>
+                            <thead>
+                                <tr>
+                                    <th>Tujuan</th>
+                                    <th>Status Barang</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
                                     <td><input type="text" name="purpose"></td>
-                                    <td><select name="status_id" id="status_id" class="form-control item-id mb-3"
-                                            required>
+                                    <td class="col-3"><select name="status_id" id="status_id"
+                                            class="form-control item-id mb-3" required>
                                             <option value="">Status:</option>
                                             @foreach ($masterStatuses as $status)
                                                 <option value="{{ $status->id }}"
@@ -78,9 +90,7 @@
                                         </select></td>
                                     <td><input type="text" name="description"></td>
 
-
                                 </tr>
-
                             </tbody>
                         </table>
 
@@ -127,11 +137,31 @@
 
     {{-- <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script> --}}
     <script src="cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script>
         $(document).ready(function() {
+            // Inisialisasi Choices.js
+            var departmentFromChoices = new Choices('#department_id_from', {
+                removeItemButton: true,
+                searchEnabled: true
+            });
+
+            var departmentToChoices = new Choices('#department_id_to', {
+                removeItemButton: true,
+                searchEnabled: true
+            });
+
+            var statusChoices = new Choices('#status_id', {
+                removeItemButton: true,
+                searchEnabled: true
+            });
+
+            var addRowChoices = new Choices('#addRow', {
+                removeItemButton: true,
+                searchEnabled: true
+            });
 
             // Nonaktifkan addRow dan submit secara default
             $('#addRow').prop('disabled', true);

@@ -60,7 +60,7 @@
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->barcode }}</td>
                                             <td>{{ $item->name }}</td>
-                                            <td>{{ $item->price }}</td>
+                                            <td>{{ number_format($item->price, 0, ',', '.') }}</td>
                                             <td>{{ $item->masterItemType->name }}</td>
                                             <td><a class="btn btn-warning"
                                                     href="{{ route('items.edit', $item->id) }}">edit</a>

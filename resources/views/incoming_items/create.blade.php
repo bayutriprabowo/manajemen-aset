@@ -23,17 +23,14 @@
                                 <th>Kode</th>
                                 <th>Item/Barang</th>
                                 <th>Departemen</th>
-                                <th>User</th>
-                                <th>Jumlah</th>
-                                <th>Status_Barang</th>
-                                <th>Keterangan</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td><input type="date" id="transaction_date" required></td>
                                 <td><input type="text" id="code" readonly required></td>
-                                <td>
+                                <td class="col-3">
                                     <select id="item_id" class="form-control item-id mb-3" required>
                                         <option value="">Pilih Item</option>
                                         @foreach ($masterItems as $item)
@@ -43,7 +40,7 @@
                                         @endforeach
                                     </select>
                                 </td>
-                                <td>
+                                <td class="col-3">
                                     <select id="department_id" class="form-control item-id mb-3" required>
                                         <option value="">Pilih Departemen</option>
                                         @foreach ($masterDepartments as $department)
@@ -53,13 +50,28 @@
                                         @endforeach
                                     </select>
                                 </td>
+
+                            </tr>
+
+                        </tbody>
+                        <thead>
+                            <tr>
+
+                                <th>User</th>
+                                <th>Jumlah</th>
+                                <th>Status_Barang</th>
+                                <th>Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
                                 <td>
                                     <input id="user_id" type="hidden" value="{{ auth()->user()->id }}" readonly
                                         required>
                                     {{ auth()->user()->name }}
                                 </td>
                                 <td><input type="text" id="quantity" required></td>
-                                <td>
+                                <td class="col-3">
                                     <select id="status_id" class="form-control item-id mb-3">
                                         <option value="">Pilih Status</option>
                                         @foreach ($masterItemStatuses as $status)
@@ -110,29 +122,34 @@
     @include('templates.script')
 
     <script src="https://cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script>
         $(document).ready(function() {
+            // Initialize Choices.js for each select element
+            const itemChoices = new Choices('#item_id', {
+                shouldSort: false
+            });
+            const departmentChoices = new Choices('#department_id', {
+                shouldSort: false
+            });
+            const statusChoices = new Choices('#status_id', {
+                shouldSort: false
+            });
+
+            // Event listener for transaction date change
             $('#transaction_date').on('change', function() {
-
                 var maxId = $('#maxId').val();
-
                 var maxCodeNumber = 0;
 
-
-
-                // Reset the #code input field before generating a new one
                 $('#code').val('');
-                // Convert maxId to an integer, or default to 0 if it's not a valid number
                 maxId = parseInt(maxId, 10) || 0;
 
                 var rowCount = document.getElementById('datatable').tBodies[0].rows.length;
                 rowCount = parseInt(rowCount, 10) || 0;
 
                 maxCodeNumber = parseInt(maxId) + parseInt(rowCount);
-
                 var newCodeNumber = (maxCodeNumber + 1).toString().padStart(4, '0');
                 var selectedDate = $('#transaction_date').val().replace(/-/g, '');
                 var newCode = `INC-${selectedDate}${newCodeNumber}`;
@@ -140,7 +157,7 @@
                 $('#code').val(newCode);
             });
 
-
+            // Event listener for adding a row
             $('#addRow').click(function() {
                 var transactionDate = $('#transaction_date').val();
                 var code = $('#code').val();
@@ -161,8 +178,7 @@
                         var existingItemId = $(this).find('input[name="item_id[]"]').val();
                         var existingDepartmentId = $(this).find('input[name="department_id[]"]')
                             .val();
-                        if (existingItemId === itemId && existingDepartmentId ===
-                            departmentId) {
+                        if (existingItemId === itemId && existingDepartmentId === departmentId) {
                             isDuplicate = true;
                             return false;
                         }
@@ -189,22 +205,25 @@
                         alert('Item ini sudah ditambahkan.');
                     }
 
+                    // Reset form fields after adding the row
                     $('#transaction_date').val('');
                     $('#code').val('');
-                    $('#item_id').val('');
-                    $('#department_id').val('');
+                    itemChoices.clearStore();
+                    departmentChoices.clearStore();
                     $('#quantity').val('');
-                    $('#status_id').val('');
+                    statusChoices.clearStore();
                     $('#description').val('');
                     $('#purpose').val('');
                 }
             });
 
+            // Event listener for deleting a row
             $('#datatable').on('click', '.delete-row', function() {
                 $(this).closest('tr').remove();
             });
         });
     </script>
+
 </body>
 
 </html>

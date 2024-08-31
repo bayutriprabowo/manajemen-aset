@@ -73,27 +73,33 @@
                 }
 
                 var optionsCompany = `<option value="">Pilih Perusahaan</option>
-                @foreach ($masterCompany as $company)
-                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                @endforeach`;
+        @foreach ($masterCompanies as $company)
+            <option value="{{ $company->id }}">{{ $company->name }}</option>
+        @endforeach`;
 
                 var newRow = document.createElement('tr');
                 newRow.innerHTML = `
-                    <td><input type="text" name="name[]" class="form-control" required></td>
-                    <td><input type="text" name="address[]" class="form-control" required></td>
-                    <td><input type="text" name="department_number[]" class="form-control" required></td>
-                    <td><input type="text" name="contact_person[]" class="form-control" required></td>
-                    <td><input type="text" name="contact_person_number[]" class="form-control" required></td>
-                    <td>
-                        <select name="company_id[]" class="form-control" required>
-                            ${optionsCompany}
-                        </select>
-                    </td>
-                    <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
-                `;
+            <td><input type="text" name="name[]" class="form-control" required></td>
+            <td><input type="text" name="address[]" class="form-control" required></td>
+            <td><input type="text" name="department_number[]" class="form-control" required></td>
+            <td><input type="text" name="contact_person[]" class="form-control" required></td>
+            <td><input type="text" name="contact_person_number[]" class="form-control" required></td>
+            <td class="col-2">
+                <select name="company_id[]" class="form-control company-select" required>
+                    ${optionsCompany}
+                </select>
+            </td>
+            <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
+        `;
 
                 tbody.appendChild(newRow);
-                console.log('New row added');
+
+                // Initialize Choices.js for the new select element
+                var companySelect = new Choices(newRow.querySelector('.company-select'), {
+                    shouldSort: false
+                });
+
+                console.log('New row added with Choices.js initialized');
             });
 
             // Remove row functionality

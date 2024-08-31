@@ -71,25 +71,28 @@
                 }
 
                 var optionsItemType = `<option value="">Pilih Tipe/Jenis</option>
-                @foreach ($masterItemTypes as $type)
-                    <option value="{{ $type->id }}">{{ $type->name }}</option>
-                @endforeach`;
+        @foreach ($masterItemTypes as $type)
+            <option value="{{ $type->id }}">{{ $type->name }}</option>
+        @endforeach`;
 
                 var newRow = document.createElement('tr');
                 newRow.innerHTML = `
-                    <td><input type="text" name="barcode[]" class="form-control"></td>
-                    <td><input type="text" name="name[]" class="form-control" required></td>
-                    <td><input type="text" name="price[]" class="form-control" required></td>
-                    
-                    <td>
-                        <select name="type_id[]" class="form-control" required>
-                            ${optionsItemType}
-                        </select>
-                    </td>
-                    <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
-                `;
+            <td><input type="text" name="barcode[]" class="form-control"></td>
+            <td><input type="text" name="name[]" class="form-control" required></td>
+            <td><input type="text" name="price[]" class="form-control" required></td>
+            <td class="col-3">
+                <select name="type_id[]" class="form-control type-select" required>
+                    ${optionsItemType}
+                </select>
+            </td>
+            <td><button type="button" class="btn btn-danger removeRow">Remove</button></td>
+        `;
 
                 tbody.appendChild(newRow);
+
+                // Initialize Choices.js for the new select element
+                new Choices(newRow.querySelector('.type-select'));
+
                 console.log('New row added');
             });
 

@@ -26,7 +26,7 @@
                                 value="{{ $item->name }}">
                             <label for="price">Harga(Rp):</label>
                             <input type="text" class="form-control" id="price" name="price"
-                                value="{{ $item->price }}">
+                                value="{{ number_format($item->price, 0, ',', '') }}">
                             <label for="type_id">Tipe Item/Barang:</label>
                             <select class="form-control" id="type_id" name="type_id">
                                 @foreach ($masterItemTypes as $type)
@@ -54,6 +54,15 @@
     </div>
     <!-- end layout sidenav -->
     @include('templates.script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Choices.js on the select element
+            new Choices('#type_id', {
+                searchEnabled: true
+            });
+
+        });
+    </script>
 </body>
 
 </html>

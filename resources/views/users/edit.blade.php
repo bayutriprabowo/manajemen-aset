@@ -20,24 +20,24 @@
                         <div class="form-group">
                             <label for="nip">NIP:</label>
                             <input type="text" class="form-control" id="nip" name="nip"
-                                value="{{ $user->nip }}">
+                                value="{{ $user->nip }}" required>
                             <label for="name">Nama:</label>
                             <input type="text" class="form-control" id="name" name="name"
-                                value="{{ $user->name }}">
+                                value="{{ $user->name }}" required>
                             <label for="email">Email:</label>
                             <input type="email" class="form-control" id="email" name="email"
-                                value="{{ $user->email }}">
+                                value="{{ $user->email }}" required>
                             <label for="password">Password:</label>
                             <input type="text" class="form-control" id="password" name="password" value="">
                             <label for="address">Alamat:</label>
                             <input type="text" class="form-control" id="address" name="address"
-                                value="{{ $user->address }}">
+                                value="{{ $user->address }}" required>
                             <label for="position">Posisi:</label>
                             <input type="text" class="form-control" id="position" name="position"
-                                value="{{ $user->position }}">
+                                value="{{ $user->position }}" required>
 
                             <label for="company_id">Perusahaan:</label>
-                            <select class="form-control" id="company_id" name="company_id">
+                            <select class="form-control" id="company_id" name="company_id" required>
                                 @foreach ($masterCompany as $company)
                                     <option value="{{ $company->id }}"
                                         {{ $user->company_id == $company->id ? 'selected' : '' }}>{{ $company->name }}
@@ -46,7 +46,7 @@
                             </select>
 
                             <label for="role_id">Role:</label>
-                            <select class="form-control" id="role_id" name="role_id">
+                            <select class="form-control" id="role_id" name="role_id" required>
                                 @foreach ($masterRole as $role)
                                     <option value="{{ $role->id }}"
                                         {{ $user->role_id == $role->id ? 'selected' : '' }}>{{ $role->name }}
@@ -71,6 +71,16 @@
     </div>
     <!-- end layout sidenav -->
     @include('templates.script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new Choices('#company_id', {
+                searchEnabled: true
+            });
+            new Choices('#role_id', {
+                searchEnabled: true
+            });
+        });
+    </script>
 </body>
 
 </html>
